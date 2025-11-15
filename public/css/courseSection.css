@@ -1,0 +1,167 @@
+/* Enhanced Course Cards Styling */
+.card.h-100 {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  border: none;
+}
+
+.card.h-100:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ee6c4d;
+}
+
+/* Card image styling */
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Card body styling */
+.card-body {
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Card title styling */
+.card-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Course metadata styling */
+.text-muted {
+  font-size: 0.9rem;
+}
+
+/* Card text styling */
+.card-text {
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* Course info icons styling */
+.bi-clock, .bi-star-fill {
+  color: #ee6c4d;
+}
+
+/* Make the entire card clickable */
+.card-link-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Remove card footer since we're not showing the button anymore */
+.card-footer {
+  display: none;
+}
+
+/* Course category badge */
+.course-category {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(238, 108, 77, 0.9);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+/* Course duration and rating container */
+.course-meta-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+/* Course price tag */
+.course-price {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ee6c4d;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+/* Free course tag */
+.course-price.free {
+  background-color: #28a745;
+}
+
+/* Fixed height for card bodies */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Description container with fixed height and ellipsis */
+.description-container {
+  position: relative;
+  height: 80px; /* Adjust height as needed */
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.card-text {
+  margin-bottom: 0;
+}
+
+/* Push metadata to bottom of card */
+.course-meta-container {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Animation for hover effect */
+@keyframes cardHover {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: 160px;
+  }
+  
+  .course-meta-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .course-meta-container > div:first-child {
+    margin-bottom: 5px;
+  }
+}

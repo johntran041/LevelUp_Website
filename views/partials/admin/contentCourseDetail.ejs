@@ -1,0 +1,189 @@
+<main class="col-md-10 px-5 py-4 bg-white min-vh-100">
+    <form action="/admin/courses/update/<%= course._id %>" method="POST">
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+                <a href="/admin/courses" class="btn btn-light rounded-pill shadow-sm px-3 py-2 d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="flex-grow-1 text-center">
+                <h3 class="fw-semibold m-0" style="font-size: 1.8rem">Course Detail</h3>
+            </div>
+            <div style="width: 150px"></div>
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="row mb-5">
+            <div class="col-md-8">
+                <h5 class="mb-3 fw-semibold text-muted">Basic Info</h5>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Course Name</label>
+                    <input type="text" name="name" class="form-control rounded-3 shadow-sm" value="<%= course.name %>" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Instructor</label>
+                    <select name="author" class="form-select rounded-3 shadow-sm" required>
+                        <% instructors.forEach(ins => { %>
+                            <option value="<%= ins._id %>" <%= ins._id.toString() === course.author?._id?.toString() ? 'selected' : '' %>>
+                                <%= ins.firstName %> <%= ins.lastName %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Add Students</label>
+                    <div class="d-flex gap-2">
+                        <select id="student-select" class="form-select rounded-3 shadow-sm w-100">
+                            <option value="">-- Select a student --</option>
+                            <% students.forEach(std => { %>
+                                <option value="<%= std._id %>" data-email="<%= std.email %>" <%= course.studentsEnrolled.some(enrolled => enrolled._id.toString() === std._id.toString()) ? 'disabled' : '' %>>
+                                    <%= std.firstName %> <%= std.lastName %>
+                                    <%= course.studentsEnrolled.some(enrolled => enrolled._id.toString() === std._id.toString()) ? '(Already Added)' : '' %>
+                                </option>
+                            <% }) %>
+                        </select>
+                        <button type="button" id="add-student-btn" class="btn btn-dark">Add</button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-sm text-center" id="student-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <input type="hidden" name="studentsEnrolled" id="studentsEnrolledInput" />
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Price</label>
+                    <input type="number" name="price" step="0.01" class="form-control rounded-3 shadow-sm" value="<%= course.price %>" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Status</label>
+                    <select name="status" class="form-select rounded-3 shadow-sm">
+                        <option value="Not Started" <%= course.status === "Not Started" ? "selected" : "" %>>Not Started</option>
+                        <option value="On Going" <%= course.status === "On Going" ? "selected" : "" %>>On Going</option>
+                        <option value="Finished" <%= course.status === "Finished" ? "selected" : "" %>>Finished</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Date Created</label>
+                    <input type="text" class="form-control rounded-3 shadow-sm text-secondary bg-light" value="<%= new Date(course.dateCreated).toLocaleDateString('en-GB') %>" readonly />
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="mb-3 fw-semibold text-muted">Quick Stats</h5>
+                <div class="p-3 bg-light rounded shadow-sm">
+                    <h6 class="m-0 text-muted">Students Enrolled</h6>
+                    <p class="fw-bold fs-5 m-0 text-dark" id="student-count"><%= course.studentsEnrolled.length %></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-dark rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 200px">Update</button>
+            <button
+                type="button"
+                class="btn btn-danger rounded-pill shadow-sm px-4 py-2 fw-semibold"
+                style="width: 200px"
+                id="delete-course-btn"
+                data-id="<%= course._id %>"
+            >
+                Delete
+            </button>
+        </div>
+    </form>
+</main>
+
+<script>
+    const studentsEnrolledInput = document.getElementById("studentsEnrolledInput");
+    const studentSelect = document.getElementById("student-select");
+    const addStudentBtn = document.getElementById("add-student-btn");
+    const studentTableBody = document.querySelector("#student-table tbody");
+
+    const students = <%- JSON.stringify(course.studentsEnrolled.map(s => ({
+        id: s._id,
+        name: s.firstName + " " + s.lastName,
+        email: s.email
+    }))) %>;
+
+    addStudentBtn.addEventListener("click", () => {
+        const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+        const id = selectedOption.value;
+        const name = selectedOption.textContent.replace("(Already Added)", "").trim();
+        const email = selectedOption.dataset.email;
+
+        if (!id || students.some((s) => s.id === id)) return;
+
+        students.push({ id, name, email });
+        selectedOption.disabled = true;
+        updateStudentTable();
+    });
+
+    function updateStudentTable() {
+        studentTableBody.innerHTML = "";
+        students.forEach((student, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${student.name}</td>
+                <td>${student.email}</td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="removeStudent('${student.id}')">Remove</button>
+                </td>`;
+            studentTableBody.appendChild(row);
+        });
+
+        studentsEnrolledInput.value = students.map((s) => s.id).join(",");
+        document.getElementById("student-count").textContent = students.length;
+    }
+
+    function removeStudent(id) {
+        const index = students.findIndex((s) => s.id === id);
+        if (index !== -1) {
+            students.splice(index, 1);
+            const option = [...studentSelect.options].find((o) => o.value === id);
+            if (option) option.disabled = false;
+            updateStudentTable();
+        }
+    }
+
+    updateStudentTable();
+
+    // ✅ DELETE FUNCTION WORKING HERE
+    const deleteBtn = document.getElementById("delete-course-btn");
+
+    if (deleteBtn) {
+        deleteBtn.addEventListener("click", () => {
+            const courseId = deleteBtn.dataset.id;
+            if (!courseId) return;
+
+            if (confirm("Are you sure you want to delete this course?")) {
+                fetch(`/admin/courses/delete/${courseId}`, {
+                    method: "POST",
+                })
+                    .then((res) => {
+                        window.location.href = "/admin/courses";
+                    })
+                    .catch((err) => {
+                        console.error("Delete error:", err);
+                        alert("Something went wrong while deleting.");
+                    });
+            }
+        });
+    }
+</script>

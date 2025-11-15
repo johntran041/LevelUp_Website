@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" data-user-theme="<%= user ? user.theme : 'light' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= course.title %></title>
+  
+  <!-- Theme Loader - Must be the first script -->
+  <script src="/js/themeLoader.js"></script>
+  
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/darkMode.css">
+  
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text-primary: #333333;
+      --text-secondary: #6c757d;
+      --card-bg: #ffffff;
+      --border-color: #dee2e6;
+      --accent-color: #ee6c4d;
+      --accent-hover: #e95d3c;
+      --success-color: #28a745;
+      --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --shadow-medium: 0 6px 15px rgba(238, 108, 77, 0.15);
+    }
+    
+    body.dark {
+      --bg-primary: #121212;
+      --bg-secondary: #1a1a1a;
+      --text-primary: #e0e0e0;
+      --text-secondary: #adb5bd;
+      --card-bg: #1e1e1e;
+      --border-color: #444444;
+      --accent-color: #ee6c4d;
+      --accent-hover: #f27d60;
+      --success-color: #28a745;
+      --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+      --shadow-medium: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .cart-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .course-header {
+      background-color: var(--bg-secondary);
+      padding: 60px 0;
+      position: relative;
+    }
+    
+    .course-header-overlay {
+      background-color: rgba(255, 255, 255, 0.92);
+      border-radius: 12px;
+      transition: background-color 0.3s ease;
+    }
+    
+    body.dark .course-header-overlay {
+      background-color: rgba(30, 30, 30, 0.92);
+    }
+    
+    .course-title {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--text-primary);
+    }
+    
+    .course-instructor {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    
+    .course-stats {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      color: var(--text-secondary);
+    }
+    
+    .stat-icon {
+      color: var(--accent-color);
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+    
+    .course-image {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow-light);
+      height: 100%;
+      min-height: 300px;
+      object-fit: cover;
+    }
+    
+    .enroll-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      padding: 30px;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .course-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    
+    .course-price.free {
+      color: var(--success-color);
+    }
+    
+    .cart-btn {
+      background-color: var(--accent-color);
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 30px;
+      width: 100%;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      height: 52px; 
+      padding: 12px 30px;
+      box-sizing: border-box; 
+    }
+    
+    .cart-btn:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-medium);
+    }
+    
+    body.dark .cart-btn {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    body.dark .cart-btn:hover {
+      background-color: var(--accent-hover);
+    }
+    
+    .cart-btn.btn-success.disabled {
+      background-color: var(--success-color);
+      color: white;
+    }
+    
+    .cart-btn .cart-icon {
+      font-size: 1.2rem;
+    }
+    
+    .btn-container {
+      position: relative;
+    }
+    
+    .course-includes {
+      margin-bottom: 20px;
+    }
+    
+    .includes-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+    }
+    
+    .includes-icon {
+      color: var(--success-color);
+      margin-right: 10px;
+    }
+    
+    .category-badge {
+      display: inline-block;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    
+    .course-sections {
+      margin-top: 60px;
+    }
+    
+    .section-title {
+      font-weight: 600;
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .course-description {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+    }
+    
+    .instructor-section {
+      background-color: var(--bg-secondary);
+      padding: 50px 0;
+      margin-top: 60px;
+    }
+    
+    .instructor-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    
+    .instructor-name {
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+    
+    .instructor-bio {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    
+    /* Toast notification */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1100;
+    }
+    
+    .custom-toast {
+      background-color: var(--card-bg);
+      border-left: 4px solid var(--success-color);
+      box-shadow: var(--shadow-light);
+      border-radius: 4px;
+      padding: 15px 25px 15px 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 350px;
+      animation: slideIn 0.3s ease-out forwards;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .toast-icon {
+      color: var(--success-color);
+      font-size: 1.5rem;
+    }
+    
+    .toast-message {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    
+    .toast-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    /* Accordion styling for dark mode */
+    .accordion-item {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+    
+    .accordion-button {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    .accordion-button:not(.collapsed) {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .accordion-button::after {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    
+    body.dark .accordion-button::after {
+      filter: invert(1);
+    }
+    
+    .list-group-item {
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+    
+    .text-muted {
+      color: var(--text-secondary) !important;
+    }
+    
+    /* Alert styling */
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--text-primary);
+      border-color: rgba(255, 193, 7, 0.2);
+    }
+    
+    /* Badge styling */
+    .badge.bg-warning {
+      background-color: var(--accent-color) !important;
+      color: white !important;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .enroll-card {
+        position: static;
+        margin-top: 30px;
+      }
+      
+      .course-image {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body class="<%= user ? user.theme : 'light' %>" <% if (user && user._id) { %>data-user-id="<%= user._id %>"<% } %>>
+  <!-- Include Navigation -->
+  <%- include('partials/navbar') %>
+  
+  <!-- Toast Container for Notifications -->
+  <div class="toast-container"></div>
+  
+  <!-- Course Header -->
+  <section class="course-header" style='background: url("<%= course.image %>") center center / cover no-repeat;'>
+    <div class="container py-5 course-header-overlay">
+      <div class="row">
+        <div class="col-lg-8">
+          <span class="category-badge"><%= course.category || 'General' %></span>
+          <h1 class="course-title"><%= course.name %></h1>
+          <p class="course-instructor">
+            Created by 
+            <%= course.author?.firstName && course.author?.lastName 
+                  ? `${course.author.firstName} ${course.author.lastName}` 
+                  : "Unknown Instructor" %>
+          </p>                 
+  
+          <div class="course-stats">
+            <div class="stat-item">
+              <i class="bi bi-clock stat-icon"></i>
+              <span><%= course.duration || 'Duration not specified' %></span>
+            </div>
+            <div class="stat-item">
+              <i class="bi bi-star-fill stat-icon"></i>
+              <span><%= course.rating || '0' %>  reviews</span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-lg-4">
+          <div class="enroll-card">
+            <div class="course-price <%= course.price === 0 ? 'free' : '' %>">
+              <%= course.price === 0 ? 'Free' : '$' + course.price %>
+            </div>
+          
+            <% if (user && user.role === 'Student') { %>
+              <% if (isEnrolled) { %>
+                <button class="btn cart-btn btn-success disabled">
+                  <i class="bi bi-check2-circle"></i> Enrolled
+                </button>
+              <% } else { %>
+                <button class="btn cart-btn" data-id="<%= course._id %>">
+                  <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+              <% } %>
+            <% } else if (user && user.role === 'Instructor') { %>
+              <div class="alert alert-warning">
+                Only students can purchase courses.
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Course Content -->
+  <section class="course-sections">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- About This Course -->
+          <div class="mb-5">
+            <h2 class="section-title">About This Course</h2>
+            <div class="course-description">
+              <% if (course.description) { %>
+                <p><%= course.description %></p>
+              <% } else { %>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod, nisl eget tincidunt ultricies, nunc elit ultricies nunc, vitae luctus nisl nunc eget nunc. Donec euismod, nisl eget tincidunt ultricies, nunc elit ultricies nunc, vitae luctus nisl nunc eget nunc.</p>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+              <% } %>
+            </div>
+          </div>
+          
+          <!-- What You'll Learn -->
+          <div class="mb-5">
+            <h2 class="section-title">What You'll Learn</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-unstyled">
+                  <% if (course.learningOutcomes && course.learningOutcomes.length) { %>
+                    <% course.learningOutcomes.forEach(outcome => { %>
+                      <li class="mb-3"><i class="bi bi-check2-circle text-success me-2"></i> <%= outcome %></li>
+                    <% }) %>
+                  <% } else { %>
+                    <li>No learning outcomes specified.</li>
+                  <% } %>
+                </ul>                
+              </div>
+            </div>
+          </div>
+          
+          <!-- Course Content Preview -->
+          <div class="mb-5">
+            <h2 class="section-title">Course Content</h2>
+            <div class="accordion" id="courseContentAccordion">
+              <!-- Section 1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Section 1: Introduction
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#courseContentAccordion">
+                  <div class="accordion-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-play-circle me-2"></i>
+                          Welcome to the Course
+                        </div>
+                        <span class="text-muted">10:15</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-play-circle me-2"></i>
+                          Course Overview
+                        </div>
+                        <span class="text-muted">15:22</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-file-earmark-text me-2"></i>
+                          Getting Started Guide
+                        </div>
+                        <span class="text-muted">PDF</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Section 2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Section 2: Fundamentals
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#courseContentAccordion">
+                  <div class="accordion-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-play-circle me-2"></i>
+                          Core Concepts
+                        </div>
+                        <span class="text-muted">22:45</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-play-circle me-2"></i>
+                          Essential Tools
+                        </div>
+                        <span class="text-muted">18:30</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-play-circle me-2"></i>
+                          Best Practices
+                        </div>
+                        <span class="text-muted">25:12</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Section 3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Section 3: Advanced Topics
+                  </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#courseContentAccordion">
+                  <div class="accordion-body">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-lock-fill me-2 text-muted"></i>
+                          Advanced Techniques
+                        </div>
+                        <span class="badge bg-warning text-dark">Preview</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-lock-fill me-2 text-muted"></i>
+                          Real-world Applications
+                        </div>
+                        <span class="text-muted">45:10</span>
+                      </li>
+                      <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                          <i class="bi bi-lock-fill me-2 text-muted"></i>
+                          Final Project
+                        </div>
+                        <span class="text-muted">1:15:00</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Instructor Section -->
+  <section class="instructor-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <h2 class="section-title">Your Instructor</h2>
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <img src="/images/instructor-placeholder.jpg" alt="<%= course.instructor || 'Instructor' %>" class="instructor-img">
+              <h4 class="instructor-name"><%= course.instructor || 'Instructor Name' %></h4>
+            </div>
+            <div class="col-md-9">
+              <p class="instructor-bio">
+                <%= course.instructorBio %>
+              </p>
+              <div class="instructor-stats mt-4">
+                <div class="row">
+                  <div class="col-6 col-md-4">
+                    <div class="stat-item">
+                      <i class="bi bi-star-fill stat-icon"></i>
+                      <span>4.7 Instructor Rating</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="stat-item">
+                      <i class="bi bi-chat-fill stat-icon"></i>
+                      <span>2,450 Reviews</span>
+                    </div>
+                  </div>
+                  <div class="col-6 col-md-4">
+                    <div class="stat-item">
+                      <i class="bi bi-people-fill stat-icon"></i>
+                      <span>12,500 Students</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Include Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Subscription form handler -->
+  <script src="/js/footer.js"></script>
+  
+  <!-- Course enrollment and cart script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartButton = document.querySelector('.cart-btn');
+      // Find ALL cart count badges in the navbar
+      const cartBadges = document.querySelectorAll('.navbar .badge.bg-danger');
+  
+      if (!cartButton) return;
+  
+      cartButton.addEventListener('click', function() {
+        const courseId = cartButton.dataset.id;
+  
+        // fire off the add-to-cart
+        fetch(`/cart/add/${courseId}`, { method: 'POST', headers: { 'Accept': 'application/json' } })
+          .then(r => r.json())
+          .then(data => {            
+            showToast('Course added to cart!', 'success');
+          })
+          .catch(err => {
+            console.error('Error adding to cart:', err);
+            showToast('Failed to add to cart.', 'error');
+          });
+      });
+  
+      function updateAllCartBadges(count) {
+        // Update all existing badges in the navbar (no animation)
+        cartBadges.forEach(badge => {
+          badge.textContent = count;
+        });
+        
+        // Also update the cart icon in navbar if it has a counter
+        const navbarCartIcon = document.querySelector('.navbar .bi-cart3') ||
+                               document.querySelector('.navbar .bi-cart') ||
+                               document.querySelector('.navbar [class*="cart"]');
+        
+        if (navbarCartIcon) {
+          let badge = navbarCartIcon.parentElement.querySelector('.cart-counter');
+          const container = navbarCartIcon.parentElement;
+          
+          if (!badge && container) {
+            // ensure parent is positioned
+            if (getComputedStyle(container).position === 'static') {
+              container.style.position = 'relative';
+            }
+            badge = document.createElement('span');
+            badge.className = 'cart-counter';
+            container.appendChild(badge);
+          }
+          
+          if (badge) {
+            badge.textContent = count;
+          }
+        }
+      }
+      
+      function showToast(message, type = 'success') {
+        const toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) return;
+        
+        const toast = document.createElement('div');
+        toast.className = 'custom-toast';
+        toast.innerHTML = `
+          <div class="toast-icon">
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+          </div>
+          <div class="toast-message">${message}</div>
+          <span class="toast-close">&times;</span>
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+        
+        // Close button functionality
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

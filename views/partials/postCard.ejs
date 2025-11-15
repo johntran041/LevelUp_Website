@@ -1,0 +1,53 @@
+<div class="col-md-4 mb-4">
+  <div class="card h-100 shadow-sm">
+    <!-- Card header with author info -->
+    <div class="card-header bg-white border-0 pt-3">
+      <div class="d-flex align-items-center">
+        <img 
+          src="<%= post.author.avatar || '/images/default-avatar.png' %>" 
+          alt="<%= post.author.firstName %>" 
+          class="rounded-circle me-2" 
+          style="width: 40px; height: 40px; object-fit: cover;"
+        >
+        <div>
+          <h6 class="mb-0 fw-bold"><%= post.author.firstName %> <%= post.author.lastName %></h6>
+          <small class="text-muted"><%= new Date(post.createdAt).toLocaleDateString() %></small>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Card body -->
+    <div class="card-body">
+      <h5 class="card-title fw-bold"><%= post.title %></h5>
+      <p class="card-text">
+        <% if (post.content) { %> 
+          <%= post.content.substring(0, 150) %> 
+          <%= post.content.length > 150 ? '...' : '' %> 
+        <% } else { %>
+          No content available. 
+        <% } %>
+      </p>
+      
+      <!-- Post metadata/tags if available -->
+      <% if (post.tags && post.tags.length > 0) { %>
+        <div class="mt-2">
+          <% post.tags.forEach(tag => { %>
+            <span class="badge bg-light text-dark me-1">#<%= tag %></span>
+          <% }); %>
+        </div>
+      <% } %>
+    </div>
+    
+    <!-- Card footer with engagement metrics -->
+    <div class="card-footer bg-white border-0">
+      <div class="d-flex justify-content-between text-muted">
+        <small><i class="bi bi-heart me-1"></i> <%= post.likes || 0 %> likes</small>
+        <small><i class="bi bi-chat-dots me-1"></i> <%= post.comments || 0 %> comments</small>
+        <small><i class="bi bi-eye me-1"></i> <%= post.views || 0 %> views</small>
+      </div>
+    </div>
+    
+    <!-- Make entire card clickable -->
+    <a href="/forum/posts/<%= post._id %>" class="card-link-wrapper" aria-label="View post"></a>
+  </div>
+</div>

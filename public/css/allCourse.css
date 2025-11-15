@@ -1,0 +1,223 @@
+/* Add CSS variables to support dark mode */
+:root {
+  --card-bg: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  --bg-secondary: #f8f9fa;
+  --primary-color: #e07b4f;
+  --button-bg: white;
+  --button-color: black;
+  --button-border: lightsalmon;
+  --button-active-bg: orange;
+  --button-active-color: white;
+  --button-hover-bg: orange;
+  --button-hover-color: white;
+  --scroll-button-bg: white;
+}
+
+/* Dark mode variables */
+body.dark {
+  --card-bg: #1f1f1f;
+  --text-primary: #f5f5f5;
+  --text-secondary: #adb5bd;
+  --border-color: #444;
+  --bg-secondary: #2d2d2d;
+  --primary-color: #e07b4f;
+  --button-bg: #2d2d2d;
+  --button-color: #f5f5f5;
+  --button-border: #e07b4f;
+  --button-active-bg: orange;
+  --button-active-color: white;
+  --button-hover-bg: #e07b4f;
+  --button-hover-color: white;
+  --scroll-button-bg: #2d2d2d;
+}
+
+/* All button */
+.btn-all {
+    background-color: var(--button-bg);
+    color: var(--button-color);
+    border: 1px solid var(--button-border);
+}
+
+.btn-all.active {
+    background-color: var(--button-active-bg);
+    color: var(--button-active-color);
+}
+
+.btn-all:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-color);
+}
+
+/* Category buttons */
+.btn-categories {
+    background-color: transparent;
+    color: var(--button-color);
+    border: 1px solid var(--button-border);
+    transition: background-color 0.2s ease, color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.btn-categories:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-color);
+    border-color: var(--button-border);
+}
+
+.btn-categories.active {
+    background-color: var(--button-active-bg);
+    color: var(--button-active-color);
+    border-color: var(--button-border);
+}
+
+.category-carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+}
+
+.category-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 12px;
+    padding: 10px;
+    width: 100%;
+    scrollbar-width: none; /* Firefox */
+}
+
+.category-carousel::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.category-btn {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    border: 1px solid var(--button-border);
+    border-radius: 20px;
+    background-color: transparent;
+    color: var(--button-color);
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.category-btn:hover,
+.category-btn.active {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-color);
+    border-color: var(--button-hover-bg);
+}
+
+/* Scroll buttons */
+.scroll-btn {
+    background: var(--scroll-button-bg);
+    border: none;
+    font-size: 1.5rem;
+    padding: 0 10px;
+    cursor: pointer;
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.category-carousel-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.category-carousel {
+    display: flex;
+    flex-wrap: nowrap; /* 🧨 prevent wrapping */
+    overflow-x: auto;
+    gap: 12px;
+    scroll-behavior: smooth;
+}
+
+.category-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.btn-categories,
+.btn-all {
+    flex: 0 0 auto; /* ⛔️ prevent buttons from shrinking or wrapping */
+    white-space: nowrap; /* ⛔️ prevent text wrapping */
+    text-align: center;
+    min-width: 150px;
+    border-radius: 10px;
+    border: 1px solid var(--button-border);
+    padding: 10px 16px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-categories.active,
+.btn-all.active {
+    background-color: var(--button-active-bg);
+    color: var(--button-active-color);
+    font-weight: 600;
+}
+
+.scroll-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* Bootstrap button overrides for dark mode */
+body.dark .btn-light {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+body.dark .btn-outline-secondary {
+    color: var(--text-primary);
+    border-color: #6c757d;
+}
+
+body.dark .btn-warning {
+    background-color: #e07b4f; /* Keep the orange for better visibility */
+    border-color: #e07b4f;
+}
+
+/* Description container consistent styling */
+.description-container {
+    color: var(--text-primary);
+}
+
+/* Make "No courses available" visible in all modes */
+#courseList .text-center p {
+    color: var(--text-primary);
+}
+
+/* Category buttons on All Courses page */
+body.dark .category-buttons .btn-light {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+body.dark .category-buttons .btn-warning {
+    background-color: #e07b4f;
+    color: white;
+}

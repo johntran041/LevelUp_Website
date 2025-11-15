@@ -1,0 +1,436 @@
+<nav
+    class="navbar navbar-expand-md shadow-sm"
+    style="
+        background-color: var(--navbar-bg, #fff);
+        padding: 10px 24px;
+        border-bottom: 1px solid var(--border-color, #eaeaea);
+    "
+>
+    <div class="container-fluid">
+        <!-- Brand -->
+        <a
+            class="navbar-brand fw-bold"
+            id="navbar-brand"
+            href="/"
+            style="font-size: 1.4rem; color: var(--text-primary, #212529)"
+            >Level Up</a
+        >
+
+        <!-- Toggler (hamburger) -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible navbar content -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <div
+                class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3"
+            >
+                <!-- Search bar -->
+                <form
+                    class="d-flex justify-content-center w-100 w-md-auto position-relative"
+                    id="navbar-search"
+                    action="/search"
+                    method="GET"
+                    style="max-width: 500px"
+                >
+                    <input
+                        class="form-control"
+                        type="search"
+                        name="query"
+                        placeholder="Search for courses and users"
+                        aria-label="Search"
+                        style="
+                            background-color: var(--input-bg, #f2f2f2);
+                            border: none;
+                            border-radius: 50px;
+                            padding: 8px 20px;
+                            padding-right: 40px;
+                            color: var(--text-primary, #212529);
+                        "
+                    />
+                    <button
+                        type="submit"
+                        class="btn position-absolute"
+                        style="
+                            right: 5px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            background: transparent;
+                            border: none;
+                            color: var(--text-primary, #212529);
+                        "
+                    >
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+
+                <!-- Navigation links -->
+                <ul
+                    class="navbar-nav flex-row align-items-center gap-3"
+                    id="navbar-links"
+                >
+                    <li class="nav-item">
+                        <a
+                            class="nav-link fw-medium"
+                            href="/courses"
+                            style="color: var(--text-primary, #212529)"
+                            >All Courses</a
+                        >
+                    </li>
+                    <% if (user) { %>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link fw-medium"
+                            href="/about-us"
+                            style="color: var(--text-primary, #212529)"
+                            >About Us</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link fw-medium"
+                            href="/forum"
+                            style="color: var(--text-primary, #212529)"
+                            >Forum</a
+                        >
+                    </li>
+                    <% if (user.role === 'Student') { %>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link text-white fw-semibold"
+                            href="/user/my-courses"
+                            style="
+                                background-color: #ee6c4d;
+                                padding: 6px 16px;
+                                border-radius: 20px;
+                                box-shadow: 0 2px 6px rgba(238, 108, 77, 0.4);
+                            "
+                            >My Courses</a
+                        >
+                    </li>
+                    <% } else { %>
+                    <li class="nav-item">
+                        <a
+                            class="nav-link text-white fw-semibold"
+                            href="/user/my-teaching"
+                            style="
+                                background-color: #ee6c4d;
+                                padding: 6px 16px;
+                                border-radius: 20px;
+                                box-shadow: 0 2px 6px rgba(238, 108, 77, 0.4);
+                            "
+                            >My Teaching</a
+                        >
+                    </li>
+                    <% } %> <% } %>
+                </ul>
+
+                <!-- Icons + Avatar -->
+                <% if (user) { %>
+                <div
+                    class="d-flex justify-content-center justify-content-md-end align-items-center gap-3"
+                    id="navbar-icons"
+                >
+                    <% if (user.role === 'Student') { %>
+                    <a
+                        href="/cart"
+                        style="color: var(--text-primary, #212529)"
+                        class="position-relative"
+                    >
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <% if (cartCount > 0) { %>
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        >
+                            <%= cartCount %>
+                            <span class="visually-hidden">items in cart</span>
+                        </span>
+                        <% } %>
+                    </a>
+                    <% } %>
+                    <a
+                        href="/messages"
+                        style="color: var(--text-primary, #212529)"
+                        ><i class="bi bi-chat-dots fs-5"></i
+                    ></a>
+
+                    <!-- Avatar Dropdown -->
+                    <div class="dropdown">
+                        <a
+                            href="#"
+                            id="profileMenu"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                            style="
+                                gap: 6px;
+                                color: var(--text-primary, #212529);
+                            "
+                        >
+                            <img
+                                src="<%= user.avatar %>"
+                                alt="Avatar"
+                                style="
+                                    width: 40px;
+                                    height: 40px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                "
+                            />
+                        </a>
+                        <ul
+                            class="dropdown-menu dropdown-menu-end shadow"
+                            aria-labelledby="profileMenu"
+                            style="
+                                min-width: 260px;
+                                border-radius: 12px;
+                                overflow: hidden;
+                                background-color: var(--card-bg, #fff);
+                                border-color: var(--border-color, #ddd);
+                            "
+                        >
+                            <!-- User Info -->
+                            <li
+                                class="px-3 py-3 border-bottom"
+                                style="
+                                    border-color: var(
+                                        --border-color,
+                                        #ddd
+                                    ) !important;
+                                "
+                            >
+                                <a
+                                    href="/userProfile/<%= user._id %>"
+                                    class="text-decoration-none gap-2 d-flex align-items-center profile-hover"
+                                    style="color: var(--text-primary, #212529)"
+                                >
+                                    <img
+                                        src="<%= user.avatar %>"
+                                        alt="Avatar"
+                                        style="
+                                            width: 48px;
+                                            height: 48px;
+                                            border-radius: 50%;
+                                            object-fit: cover;
+                                        "
+                                    />
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold"
+                                            ><%= user.firstName %> <%=
+                                            user.lastName %></span
+                                        >
+                                        <small class="text-muted"
+                                            ><%= user.email %></small
+                                        >
+                                    </div>
+                                </a>
+                            </li>
+
+                            <% if (user.role === 'Student') { %>
+                            <li class="py-2">
+                                <a
+                                    class="dropdown-item"
+                                    href="/my-courses"
+                                    style="color: var(--text-primary, #212529)"
+                                    >My Learning</a
+                                >
+                            </li>
+                            <li
+                                class="py-2 border-bottom"
+                                style="
+                                    border-color: var(
+                                        --border-color,
+                                        #ddd
+                                    ) !important;
+                                "
+                            >
+                                <a
+                                    class="dropdown-item d-flex align-items-center justify-content-between"
+                                    href="/cart"
+                                    style="color: var(--text-primary, #212529)"
+                                >
+                                    My Cart
+                                </a>
+                            </li>
+                            <% } else if (user.role === 'Instructor') { %>
+                            <li
+                                class="py-2 border-bottom"
+                                style="
+                                    border-color: var(
+                                        --border-color,
+                                        #ddd
+                                    ) !important;
+                                "
+                            >
+                                <a
+                                    class="dropdown-item"
+                                    href="/user/my-teaching"
+                                    style="color: var(--text-primary, #212529)"
+                                    >My Teaching</a
+                                >
+                            </li>
+                            <% } %>
+
+                            <li
+                                class="py-2 border-bottom"
+                                style="
+                                    border-color: var(
+                                        --border-color,
+                                        #ddd
+                                    ) !important;
+                                "
+                            >
+                                <a
+                                    class="dropdown-item"
+                                    href="/messages"
+                                    style="color: var(--text-primary, #212529)"
+                                    >Messages</a
+                                >
+                            </li>
+                            <li
+                                class="py-2 border-bottom"
+                                style="
+                                    border-color: var(
+                                        --border-color,
+                                        #ddd
+                                    ) !important;
+                                "
+                            >
+                                <a
+                                    class="dropdown-item"
+                                    href="/userSettings/profilePreference/<%= user._id %>"
+                                    style="color: var(--text-primary, #212529)"
+                                    >Edit Profile</a
+                                >
+                            </li>
+                            <li class="py-2">
+                                <a
+                                    class="dropdown-item text-danger fw-semibold"
+                                    href="/auth/logout"
+                                    >Logout</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <% } else { %>
+                <!-- Guest User (Not Logged In) -->
+                <div
+                    class="d-flex justify-content-center justify-content-md-end align-items-center gap-2"
+                    id="navbar-icons"
+                >
+                    <a
+                        href="/auth/login"
+                        class="btn btn-sm d-flex align-items-center gap-2 rounded-pill px-3 shadow-sm"
+                        style="
+                            color: var(--text-primary, #212529);
+                            border-color: var(--text-primary, #212529);
+                        "
+                    >
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                    <a
+                        href="/auth/register"
+                        class="btn btn-primary btn-sm d-flex align-items-center gap-2 rounded-pill px-3 shadow-sm"
+                        style="background-color: #ee6c4d; border: none"
+                    >
+                        <i class="bi bi-person-plus-fill"></i> Register
+                    </a>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* CSS variables for dark mode support */
+    :root {
+        --navbar-bg: #fff;
+        --text-primary: #212529;
+        --border-color: #eaeaea;
+        --input-bg: #f2f2f2;
+        --card-bg: #fff;
+    }
+
+    body.dark {
+        --navbar-bg: #1f1f1f;
+        --text-primary: #f5f5f5;
+        --border-color: #444;
+        --input-bg: #2d2d2d;
+        --card-bg: #1f1f1f;
+    }
+
+    /* Fix navbar toggler in dark mode */
+    body.dark .navbar-toggler-icon {
+        filter: invert(1);
+    }
+
+    body.dark .navbar-toggler {
+        border-color: var(--border-color);
+    }
+
+    /* Hover states for nav links */
+    .navbar-nav .nav-link {
+        white-space: nowrap;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #e07b4f !important;
+        transform: translateY(-1px);
+    }
+
+    body.dark .navbar-nav .nav-link:hover {
+        color: #e07b4f !important;
+    }
+
+    /* Hover effect for profile menu */
+    .profile-hover:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark .profile-hover:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Dropdown item hover */
+    body.dark .dropdown-item:hover,
+    body.dark .dropdown-item:focus {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Fix placeholder color in dark mode */
+    body.dark input::placeholder {
+        color: #aaa;
+    }
+
+    @media (max-width: 767px) {
+        #navbar-links,
+        #navbar-icons,
+        #navbar-search {
+            justify-content: center !important;
+            text-align: center;
+        }
+        #navbar-links li {
+            width: 100%;
+        }
+        #navbar-search {
+            padding: 10px 0;
+        }
+        #navbar-icons {
+            margin-top: 10px;
+        }
+    }
+</style>
+
+<script src="/js/cart.js"></script>

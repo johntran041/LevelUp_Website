@@ -1,0 +1,141 @@
+<div class="d-flex align-items-center gap-3 mb-4">
+    <button
+        id="leftSidebarToggle"
+        class="mobile-menu-button"
+        aria-label="Toggle left sidebar"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <h1 class="h4 m-0">Account Balance</h1>
+</div>
+
+<!-- balance info -->
+<form
+    action="/userSettings/balance/update/<%= user._id %>"
+    method="POST"
+    class="row g-3"
+>
+    <div class="col-md-12">
+        <label class="form-label fw-bold">Current Balance (Coin)</label>
+        <input
+            type="text"
+            class="form-control"
+            value="$ <%= Math.round(user.coin || 0) %>"
+            readonly
+            disabled
+        />
+    </div>
+
+    <!-- payment -->
+    <div class="col-md-12 mt-4">
+        <label class="form-label fw-bold">Payment methods</label>
+    </div>
+
+    <!-- Card Number input with icons -->
+    <div class="col-md-12 position-relative mb-1">
+        <input
+            type="text"
+            name="cardNumber"
+            class="form-control"
+            placeholder="Card Number"
+            value="<%= user.cardPaymentInfo.cardNumber %>"
+            pattern="\d{4} \d{4} \d{4} \d{4}"
+            title="Enter a 16-digit card number"
+            required
+        />
+        <div class="position-absolute top-50 end-0 translate-middle-y me-3">
+            <img
+                src="/images/mastercard.png"
+                alt="MasterCard"
+                height="22"
+                class="me-1"
+            />
+            <img src="/images/visa.png" alt="Visa" height="22" />
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <input
+            type="text"
+            name="expirationDate"
+            class="form-control"
+            placeholder="MM/YY"
+            pattern="\d{2}/\d{2}"
+            title="Enter a valid expiration date, e.g., 09/26"
+            value="<%= user.cardPaymentInfo.expirationDate %>"
+            required
+        />
+    </div>
+    <div class="col-md-6">
+        <input
+            type="text"
+            name="cvv"
+            class="form-control"
+            placeholder="CVC"
+            maxlength="4"
+            pattern="[0-9]{3,4}"
+            title="Enter a valid 3 or 4 digit CVV"
+            value="<%= user.cardPaymentInfo.cvv %>"
+            required
+        />
+    </div>
+
+    <div class="col-md-12">
+        <input
+            type="text"
+            name="cardHolderName"
+            class="form-control"
+            placeholder="Name on card"
+            value="<%= user.cardPaymentInfo.cardHolderName %>"
+            required
+        />
+    </div>
+
+    <div class="col-md-12 mt-3">
+        <button type="submit" class="btn btn-continue">Save</button>
+    </div>
+</form>
+
+<% if (success) { %>
+<div class="col-md-12 d-flex justify-content-center">
+    <div
+        id="success-alert"
+        class="alert alert-success text-center fw-semibold rounded-pill shadow-sm px-4 py-2 mt-3"
+        style="max-width: 400px; transition: opacity 0.5s ease"
+    >
+        ✅ Updated successfully!
+    </div>
+</div>
+<% } %>
+
+<script>
+    const cardInput = document.querySelector('input[name="cardNumber"]');
+    cardInput.addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, "").substring(0, 16);
+        let formatted = "";
+        for (let i = 0; i < value.length; i += 4) {
+            formatted += value.substring(i, i + 4) + " ";
+        }
+        e.target.value = formatted.trim();
+    });
+
+    const expiryInput = document.querySelector('input[name="expirationDate"]');
+    expiryInput.addEventListener("input", function (e) {
+        let value = e.target.value.replace(/\D/g, "").substring(0, 4);
+        if (value.length > 2) {
+            value = value.substring(0, 2) + "/" + value.substring(2);
+        }
+        e.target.value = value;
+    });
+
+    setTimeout(() => {
+        const alert = document.getElementById("success-alert");
+        if (alert) {
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+            setTimeout(() => alert.remove(), 500);
+        }
+    }, 5000);
+</script>

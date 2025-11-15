@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-user-theme="<%= user ? user.theme : 'light' %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search Results - LearnNow</title>
+
+  <!-- Theme Loader - Must be the first script -->
+  <script src="/js/themeLoader.js"></script>
+
+  <!-- Bootstrap 5 CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap Icons CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+    rel="stylesheet"
+  />
+
+  <!-- NavBar CSS -->
+  <link rel="stylesheet" href="/css/navBarStyle.css" />
+  <!-- Course Cards CSS -->
+  <link rel="stylesheet" href="/css/courseSection.css" />
+  <!-- Dark Mode CSS -->
+  <link rel="stylesheet" href="/css/darkMode.css" />
+  
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text-primary: #333333;
+      --text-secondary: #6c757d;
+      --border-color: #e0e0e0;
+      --card-bg: #ffffff;
+      --accent-color: #ff8c42;
+      --highlight-bg: rgba(255, 140, 66, 0.15);
+      --student-badge-bg: #4CAF50;
+      --instructor-badge-bg: #2196F3;
+      --empty-results-bg: #f8f9fa;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --avatar-border: white;
+    }
+    
+    body.dark {
+      --bg-primary: #121212;
+      --bg-secondary: #1a1a1a;
+      --text-primary: #f5f5f5;
+      --text-secondary: #adb5bd;
+      --border-color: #444444;
+      --card-bg: #2d2d2d;
+      --accent-color: #ff8c42;
+      --highlight-bg: rgba(255, 140, 66, 0.25);
+      --student-badge-bg: #4CAF50;
+      --instructor-badge-bg: #2196F3;
+      --empty-results-bg: #1e1e1e;
+      --shadow: rgba(0, 0, 0, 0.2);
+      --avatar-border: #444444;
+    }
+    
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .section-divider {
+      margin: 40px 0;
+      position: relative;
+      height: 1px;
+      background-color: var(--border-color);
+    }
+    
+    .section-title {
+      position: relative;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent-color);
+    }
+    
+    .section-title h2 {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    
+    .text-muted {
+      color: var(--text-secondary) !important;
+    }
+    
+    .empty-results {
+      padding: 30px;
+      background-color: var(--empty-results-bg);
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    .search-header {
+      background-color: var(--bg-secondary);
+      padding: 30px 0;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .highlight {
+      background-color: var(--highlight-bg);
+      padding: 0 3px;
+      border-radius: 3px;
+      color: var(--text-primary);
+    }
+
+    /* User card styling */
+    .user-card {
+      transition: all 0.3s ease;
+      border-radius: 15px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+    
+    .user-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px var(--shadow);
+    }
+    
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--avatar-border);
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    
+    .user-role-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .role-student {
+      background-color: var(--student-badge-bg);
+      color: white;
+    }
+    
+    .role-instructor {
+      background-color: var(--instructor-badge-bg);
+      color: white;
+    }
+    
+    /* Course card overrides */
+    .card {
+      background-color: var(--card-bg);
+      border-color: var(--border-color);
+    }
+    
+    .card-title {
+      color: var(--text-primary);
+    }
+    
+    .card-text {
+      color: var(--text-primary);
+    }
+    
+    .btn-outline-primary {
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+    
+    .btn-outline-primary:hover {
+      background-color: var(--accent-color);
+      color: white;
+      border-color: var(--accent-color);
+    }
+    
+    /* Alert styling */
+    .alert-info {
+      background-color: rgba(13, 202, 240, 0.1);
+      color: var(--text-primary);
+      border-color: rgba(13, 202, 240, 0.2);
+    }
+    
+    .btn-primary {
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+    
+    .btn-primary:hover {
+      background-color: #e07e3b;
+      border-color: #e07e3b;
+    }
+  </style>
+</head>
+<body class="<%= user ? user.theme : 'light' %>" <% if (user && user._id) { %>data-user-id="<%= user._id %>"<% } %>>
+  <%- include('partials/navbar') %>
+
+  <div class="search-header">
+    <div class="container">
+      <h1 class="fw-bold">Search Results</h1>
+      <p class="text-muted fs-5">Showing results for "<span class="highlight"><%= searchQuery %></span>"</p>
+      
+      <% if ((courses && courses.length === 0) && (users && users.length === 0)) { %>
+        <div class="alert alert-info mt-4">
+          No results found. Try a different search term or browse our categories.
+        </div>
+        <div class="mt-3">
+          <a href="/courses" class="btn btn-primary me-2">Browse Courses</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="container mb-5">
+    <!-- USERS SECTION -->
+    <% if (users && users.length > 0) { %>
+      <div class="section-title">
+        <h2>
+          People
+          <small class="text-muted fs-6">(<%= users.length %> found)</small>
+        </h2>
+      </div>
+      
+      <div class="row mb-5">
+        <% users.forEach(user => { %>
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card user-card h-100 shadow-sm">
+              <div class="card-body text-center position-relative">
+                <span class="user-role-badge <%= user.role === 'Student' ? 'role-student' : 'role-instructor' %>">
+                  <%= user.role %>
+                </span>
+                <img src="<%= user.avatar || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3467.jpg' %>" 
+                     alt="<%= user.firstName %> <%= user.lastName %>" 
+                     class="user-avatar mb-3">
+                <h5 class="card-title mb-1"><%= user.firstName %> <%= user.lastName %></h5>
+                <p class="text-muted small mb-3"><%= user.headline || '' %></p>
+                <a href="/userProfile/<%= user._id %>" class="btn btn-sm btn-outline-primary">View Profile</a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+
+    <!-- COURSES SECTION -->
+    <% if (courses && courses.length > 0) { %>
+      <div class="section-title">
+        <h2>
+          Courses
+          <small class="text-muted fs-6">(<%= courses.length %> found)</small>
+        </h2>
+      </div>
+      
+      <div class="row">
+        <% courses.forEach(course => { %>
+          <!-- Course Card -->
+          <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+              <!-- Add category badge -->
+              <div class="course-category"><%= course.category || 'General' %></div>
+              
+              <!-- Card image -->
+              <img
+                src="<%= course.image || '/images/course-placeholder.jpg' %>"
+                class="card-img-top"
+                alt="<%= course.name %>"
+              />
+              
+              <!-- Card body with flex-grow to push metadata to bottom -->
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold text-center"><%= course.name %></h5>
+                <p class="text-center text-muted">
+                  <% if (course.author) { %>
+                    <% if (typeof course.author === 'object' && course.author.firstName && course.author.lastName) { %>
+                      by <%= course.author.firstName %> <%= course.author.lastName %>
+                    <% } else if (typeof course.author === 'string') { %>
+                      by <%= course.author %>
+                    <% } else { %>
+                      by Unknown Instructor
+                    <% } %>
+                  <% } else { %>
+                    by Unknown Instructor
+                  <% } %>
+                </p>
+                
+                <!-- Fixed-height description container with overflow handling -->
+                <div class="description-container" style="height: 80px; overflow: hidden; margin-bottom: 10px;">
+                  <p class="card-text">
+                    <% if (course.description) { %> 
+                      <%= course.description.substring(0, 100) %>
+                      <%= course.description.length > 100 ? '...' : '' %> 
+                    <% } else { %>
+                      No description available. 
+                    <% } %>
+                  </p>
+                </div>
+                
+                <!-- Course metadata - will always be at the bottom thanks to mt-auto -->
+                <div class="course-meta-container mt-auto">
+                  <div>
+                    <i class="bi bi-clock me-2"></i> 
+                    <%= course.duration || 'Duration not specified' %>
+                  </div>
+                  <div>
+                    <i class="bi bi-star-fill me-2"></i> 
+                    <%= typeof course.rating === 'number' ? course.rating.toFixed(1) : '0.0' %> 
+                    (<%= course.reviews?.length || Math.floor(Math.random() * 1000) %>)
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Make entire card clickable -->
+              <a href="/courses/<%= course._id %>" class="card-link-wrapper" aria-label="View <%= course.name %>"></a>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+    
+    <!-- Show empty results if no courses or users found -->
+    <% if ((!courses || courses.length === 0) && (!users || users.length === 0)) { %>
+      <div class="empty-results mb-5">
+        <i class="bi bi-search fs-1 text-muted mb-3"></i>
+        <h4>No results found</h4>
+        <p class="text-muted">Try adjusting your search terms or browse our <a href="/courses">course catalog</a>.</p>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

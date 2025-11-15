@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Institution Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/css/institution.css">
+</head>
+
+<body>
+<!-- navbar -->
+<%- include('partials/institution/navbar') %>
+
+     <!-- display tutor-->
+    <div class="row g-1">
+      <div class="col-md-4">
+        <div class="sidebar-box text-center">
+          <img src="/images/defaultAvatar.png" alt="Avatar" class="rounded-circle mb-3 mt-5" width="100" height="100">
+          <h5 class="fw-semibold">Cody Fisher</h5>
+          <p class="text-muted">Helsinki, Finland<br>123@gmail.com</p>
+          <hr class="m-3">
+          <h6>Profile</h6>
+          <p class="small">They also don't ignore or bore high achievers. They have high expectations, are highly motivating, and believe in all of their students.</p>
+          <hr class="m-3">
+          <h6>Experience</h6>
+          <ul class="list-unstyled small">
+            <li>1 year experience in teaching</li>
+            <li>1 year experience in teaching</li>
+            <li>1 year experience in teaching</li>
+          </ul>
+          <hr class="m-3">
+          <h6>Teaching field</h6>
+          <div class="mb-2 d-flex flex-wrap gap-2">
+            <span class="fieldTag">Cybersecurity</span>
+            <span class="fieldTag">Science</span>
+            <span class="fieldTag">Science</span>
+            <span class="fieldTag">Math</span>
+            <span class="fieldTag">AI</span>
+          </div>
+          <button class="btn btn-outline-danger btn-sm ">Remove tutor</button>
+        </div>
+      </div>
+
+      <div class="col-md-8">
+        <div class="row row-cols-1 row-cols-md-2 g-4 m-4">
+          <% courses.forEach(course => { %>
+            <div class="col">
+              <div class="course-card">
+                <div class="card-img-top" style="height: 140px; overflow: hidden; border-radius: 12px 12px 0 0;">
+                    <img src="<%= course.image ? course.image : '/images/defaultCourse.png' %>" 
+                         alt="Course Thumbnail"
+                         class="img-fluid w-100 h-100 object-fit-cover rounded">
+                  </div>
+                <div class="p-3">
+                  <strong><%= course.title %></strong>
+                  <div class="small text-muted">
+                    👥 <%= course.enrollments %> Enrollments | ✨ <%= course.rating %> (<%= course.reviews %> reviews)<br>
+                    🕒 Last updated: <%= course.updatedAt %>
+                  </div>
+                  <div class="d-flex gap-2 mt-2">
+                    <button class="btn btn-outline-danger btn-sm flex-fill">Edit</button>
+                    <button class="btn btn-outline-danger btn-sm flex-fill">Delete</button>
+                    <button class="btn btn-outline-danger btn-sm flex-fill">Feedback</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<link rel="stylesheet" href="/css/footer.css" />
+
+<footer class="text-white pt-5 pb-3" style="background-color: #e17758">
+  <div class="container">
+    <div class="row">
+      <!-- About -->
+      <div class="col-4 col-md-2 mb-4">
+        <h5 class="fw-bold">About</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#" class="text-white text-decoration-none">Our Story</a>
+          </li>
+          <li>
+            <a href="#" class="text-white text-decoration-none">Contact</a>
+          </li>
+          <li>
+            <a href="#" class="text-white text-decoration-none">Careers</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Support -->
+      <div class="col-4 col-md-2 mb-4">
+        <h5 class="fw-bold">Support</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#" class="text-white text-decoration-none">Help Center</a>
+          </li>
+          <li><a href="/sitemap" class="text-white text-decoration-none">Sitemap</a></li>
+          <li>
+            <a href="#" class="text-white text-decoration-none"
+              >Accessibility</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Courses -->
+      <div class="col-4 col-md-2 mb-4">
+        <h5 class="fw-bold">Courses</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#" class="text-white text-decoration-none">Programming</a>
+          </li>
+          <li>
+            <a href="#" class="text-white text-decoration-none">Design</a>
+          </li>
+          <li>
+            <a href="#" class="text-white text-decoration-none">Business</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Stay Connected -->
+      <div class="col-12 col-md-5 mb-4">
+        <h5 class="fw-bold">Stay Connected With Us!</h5>
+        <form class="d-flex flex-column flex-sm-row gap-2 mt-2">
+          <input
+            type="email"
+            class="form-control flex-grow-5"
+            placeholder="Your email"
+            required
+          />
+          <button type="submit" class="btn btn-dark fw-bold">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <!--Contact Form Link-->
+    <div class="row">
+      <div class="col-12 d-flex justify-content-end mt-3">
+        <a
+          href="#"
+          class="btn btn-outline-light px-4 fw-semibold"
+          style="border-radius: 30px; transition: all 0.3s ease;"
+          data-bs-toggle="modal"
+          data-bs-target="#contactModal"
+          onmouseover="this.style.backgroundColor='#fff'; this.style.color='#e17758'"
+          onmouseout="this.style.backgroundColor='transparent'; this.style.color='#fff'"
+        >
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+    <!--Contact Form Display-->
+    <div
+      class="modal fade"
+      id="contactModal"
+      tabindex="-1"
+      aria-labelledby="contactModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-dark" id="contactModalLabel">
+              Contact Us
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Contact Form with Black Text -->
+            <form id="contactForm" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="name" class="form-label text-dark">Your Name</label>
+                <input type="text" class="form-control" id="name" required />
+                <div class="invalid-feedback">
+                  Please provide your name.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label text-dark"
+                  >Email Address</label
+                >
+                <input type="email" class="form-control" id="email" required />
+                <div class="invalid-feedback">
+                  Please provide a valid email address.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="subject" class="form-label text-dark"
+                  >Subject</label
+                >
+                <select class="form-select" id="subject" required>
+                  <option value="" selected disabled class="text-dark">
+                    Select a subject
+                  </option>
+                  <option value="General Inquiry" class="text-dark">
+                    General Inquiry
+                  </option>
+                  <option value="Technical Support" class="text-dark">
+                    Technical Support
+                  </option>
+                  <option value="Course Question" class="text-dark">
+                    Course Question
+                  </option>
+                  <option value="Feedback" class="text-dark">Feedback</option>
+                  <option value="Other" class="text-dark">Other</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a subject.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="message" class="form-label text-dark"
+                  >Your Message</label
+                >
+                <textarea
+                  class="form-control"
+                  id="message"
+                  rows="5"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">
+                  Please provide your message.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="privacyPolicy"
+                    required
+                  />
+                  <label class="form-check-label text-dark" for="privacyPolicy">
+                    I agree to the
+                    <a href="#" class="privacy-link">Privacy Policy</a>
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree to our privacy policy before submitting.
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary contact-submit-btn"
+                  style="background-color: #ee6c4d; border-color: #ee6c4d"
+                >
+                  <span class="btn-text">Send Message</span>
+                  <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+            </form>
+
+            <div id="contactStatus" class="text-center mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="mt-4"></div>
+    <hr class="border-white my-4" />
+    <div class="text-center small">
+      © 2025 <strong>LevelUp, Inc.</strong> All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- Add this script if you're not already including contactForm.js -->
+<script src="/js/contactForm.js"></script>

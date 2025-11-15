@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - LearnNow</title>
+  
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/navBarStyle.css">
+  <link rel="stylesheet" href="/css/contactForm.css">
+  <link rel="stylesheet" href="/css/darkMode.css">
+</head>
+<body>
+  <!-- Include Navigation -->
+  <%- include('partials/navbar') %>
+
+  <!-- Hero Section -->
+  <section class="hero-section bg-light py-5 text-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h1 class="display-4 fw-bold mb-4">Get In Touch</h1>
+          <p class="lead text-muted mb-5">Have questions about our courses or platform? Want to provide feedback? We're here to help!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Form Section -->
+  <section class="contact-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+          <div class="contact-form-container">
+            <form id="contactForm" class="contact-form needs-validation" novalidate>
+              <!-- Name Field -->
+              <div class="mb-4">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" name="name" required
+                  <% if (user) { %>value="<%= user.firstName %> <%= user.lastName %>"<% } %>>
+                <div class="invalid-feedback">
+                  Please provide your name.
+                </div>
+              </div>
+              
+              <!-- Email Field -->
+              <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required
+                  <% if (user) { %>value="<%= user.email %>"<% } %>>
+                <div class="invalid-feedback">
+                  Please provide a valid email address.
+                </div>
+              </div>
+              
+              <!-- Subject Field -->
+              <div class="mb-4">
+                <label for="subject" class="form-label">Subject</label>
+                <select class="form-select" id="subject" name="subject" required>
+                  <option value="" selected disabled>Select a subject</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Technical Support">Technical Support</option>
+                  <option value="Course Question">Course Question</option>
+                  <option value="Feedback">Feedback</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a subject.
+                </div>
+              </div>
+              
+              <!-- Message Field -->
+              <div class="mb-4">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                <div class="invalid-feedback">
+                  Please provide your message.
+                </div>
+              </div>
+              
+              <!-- Privacy Policy Checkbox -->
+              <div class="mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
+                  <label class="form-check-label" for="privacyPolicy">
+                    I agree to the <a href="/privacy-policy" class="privacy-link">Privacy Policy</a>
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree to our privacy policy before submitting.
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Submit Button -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary contact-submit-btn">
+                  <span class="btn-text">Send Message</span>
+                  <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                </button>
+              </div>
+            </form>
+            
+            <!-- Status Message -->
+            <div id="contactStatus" class="text-center mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="container mt-5">
+      <div class="row justify-content-center text-center">
+        <div class="col-md-4 mb-4">
+          <div class="contact-info-item">
+            <i class="bi bi-envelope-fill fs-1 text-primary mb-3"></i>
+            <h4>Email</h4>
+            <p><a href="mailto:s3929597@rmit.edu.vn">s3929597@rmit.edu.vn</a></p>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="contact-info-item">
+            <i class="bi bi-geo-alt-fill fs-1 text-primary mb-3"></i>
+            <h4>Location</h4>
+            <p>702 Nguyen Van Linh, District 7<br>Ho Chi Minh City, Vietnam</p>
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+          <div class="contact-info-item">
+            <i class="bi bi-clock-fill fs-1 text-primary mb-3"></i>
+            <h4>Support Hours</h4>
+            <p>Monday - Friday<br>9:00 AM - 5:00 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Include Footer -->
+  <%- include('partials/footer') %>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Contact Form JS -->
+  <script src="/js/contactForm.js"></script>
+</body>
+</html>

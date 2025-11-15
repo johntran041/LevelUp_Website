@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Purchase Confirmation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom right, #f1faf4, #eaf7f0);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .confirmation-box {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .circle-check {
+      background-color: #d4f4dd;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px;
+      animation: popIn 0.5s ease-out;
+    }
+
+    .circle-check svg {
+      width: 50px;
+      height: 50px;
+      fill: #2e7d32;
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #111;
+    }
+
+    p {
+      color: #555;
+      font-size: 1rem;
+      margin-top: 10px;
+      margin-bottom: 25px;
+    }
+
+    .details {
+      text-align: left;
+      margin: 20px 0;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+    }
+
+    .details strong {
+      color: #333;
+    }
+
+    .btn-home {
+      background-color: #2e7d32;
+      color: white;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .btn-home:hover {
+      background-color: #25682a;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .confetti {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #fcd34d;
+      animation: fall 3s linear infinite;
+      opacity: 0.8;
+    }
+
+    .confetti-piece:nth-child(odd) { background-color: #6ee7b7; }
+    .confetti-piece:nth-child(even) { background-color: #93c5fd; }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confetti">
+    <script>
+      for (let i = 0; i < 50; i++) {
+        const piece = document.createElement('div');
+        piece.classList.add('confetti-piece');
+        piece.style.left = `${Math.random() * 100}%`;
+        piece.style.animationDuration = `${2 + Math.random() * 2}s`;
+        piece.style.animationDelay = `${Math.random()}s`;
+        document.currentScript.parentNode.appendChild(piece);
+      }
+    </script>
+  </div>
+
+  <div class="confirmation-box">
+    <div class="circle-check">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 16.2l-3.5-3.6-1.4 1.4 4.9 5 10-10-1.4-1.4z"/>
+      </svg>
+    </div>
+    <h2>Congratulations, <%= user.firstName %>!</h2>
+    <p>Your purchase was successful. Happy learning!</p>
+
+    <div class="details">
+      <p><strong>Name:</strong> <%= user.firstName %> <%= user.lastName %></p>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <hr/>
+<p><strong>Order Number:</strong> <%= orderNumber %></p>
+
+<% if (typeof purchased !== 'undefined') { %>
+  <!-- COIN PURCHASE -->
+  <p><strong>Purchased Coins:</strong> <%= purchased %></p>
+  <% if (bonus>0) { %>
+    <p><strong>Bonus Coins:</strong> +<%= bonus %></p>
+  <% } %>
+  <p><strong>Total Added:</strong> <%= Number(purchased) + Number(bonus) %> coins</p>
+  <p><strong>New Balance:</strong> <%= user.coin %> coins</p>
+
+<% } else { %>
+  <!-- COURSE PURCHASE -->
+  <p><strong>Purchased Courses:</strong></p>
+  <ul>
+    <% cartItems.forEach(c=>{ %>
+      <li>✔ <%= c.title %> – $<%= parseFloat(c.price).toFixed(2) %></li>
+    <% }) %>
+  </ul>
+  <p><strong>Total:</strong> $<%= totalCost.toFixed(2) %></p>
+<% } %>
+
+
+    </div>
+
+    <a href="/" class="btn-home">Go to Homepage</a>
+  </div>
+
+</body>
+</html>

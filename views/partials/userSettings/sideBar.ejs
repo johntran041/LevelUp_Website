@@ -1,0 +1,148 @@
+<style>
+    /* Base styles for the sidebar */
+    nav.sidebar-nav,
+    nav#sidebarDropdown {
+        background-color: #fdf8f3;
+        color: #333;
+        border-right: 1px solid #eee;
+        height: 100%;
+        overflow-y: auto;
+        padding: 20px 0;
+        padding-left: 11px;
+    }
+
+    body.dark #sidebarDropdown .nav-link.active {
+        background-color: #f3c6a0 !important;
+        color: #1f1f1f !important;
+        font-weight: bold;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+    }
+    #sidebarDropdown .nav-link {
+        transition: all 0.3s ease;
+    }
+    body.dark #sidebarDropdown {
+        /* background-color: #1f1f1f !important; */
+        color: #ccc !important;
+        border-right: 1px solid #444 !important;
+        background-color: #e07b4f !important;
+    }
+    body.dark #sidebarDropdown img {
+        filter: brightness(0.9) contrast(1.2);
+    }
+
+    /* Mobile sidebar specific styles */
+    @media (max-width: 767px) {
+        #sidebarDropdown {
+            position: fixed;
+            top: 56px;
+            left: -250px;
+            width: 250px;
+            height: calc(100% - 56px);
+            z-index: 2000;
+            transition: left 0.3s ease-in-out;
+        }
+        #sidebarDropdown.open {
+            left: 0;
+        }
+    }
+
+    /* Hamburger button styles */
+    .mobile-menu-button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin-right: 10px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 30px;
+        height: 30px;
+        z-index: 2100;
+    }
+    .mobile-menu-button span {
+        display: block;
+        width: 24px;
+        height: 3px;
+        background-color: white;
+        border-radius: 2px;
+    }
+    @media (min-width: 768px) {
+        .mobile-menu-button {
+            display: none;
+        }
+    }
+</style>
+
+<!-- sidebar -->
+<nav id="sidebarDropdown" class="col-md-2 col-12">
+    <div class="p-3">
+        <div class="d-flex align-items-center mb-4 ps-2">
+            <img
+                src="<%= user.avatar %>"
+                alt="Avatar"
+                class="mb-2"
+                style="
+                    width: 70px;
+                    height: 70px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    overflow: hidden;
+                    border: 2px solid #ddd;
+                    display: block;
+                "
+            />
+
+            <h5 class="mb-0 ms-3"><%= user.firstName %></h5>
+            <h5 class="mb-0 ms-2"><%= user.lastName %></h5>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-3">
+                <a
+                    class="nav-link <%= activePage === 'profileSetting' ? 'active' : '' %>"
+                    href="/userSettings/profilePreference/<%= user._id %>"
+                    >Profile Preferences</a
+                >
+            </li>
+            <li class="nav-item mb-3">
+                <a
+                    class="nav-link <%= activePage === 'display' ? 'active' : '' %>"
+                    href="/userSettings/display/<%= user._id %>"
+                    >Display</a
+                >
+            </li>
+            <li class="nav-item mb-3">
+                <a
+                    class="nav-link <%= activePage === 'security' ? 'active' : '' %>"
+                    href="/userSettings/security/<%= user._id %>"
+                    >Account Security</a
+                >
+            </li>
+            <li class="nav-item">
+                <a
+                    class="nav-link <%= activePage === 'balance' ? 'active' : '' %>"
+                    href="/userSettings/balance/<%= user._id %>"
+                    >Account Balance</a
+                >
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script src="/js/setTheme.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuButton = document.getElementById("sidebarToggle");
+        const sidebar = document.getElementById("sidebarDropdown");
+
+        if (menuButton && sidebar) {
+            menuButton.addEventListener("click", function () {
+                sidebar.classList.toggle("open");
+            });
+        }
+    });
+</script>

@@ -1,0 +1,23 @@
+<div class="list-group">
+    <% courses.forEach(course => { %>
+    <div class="list-group-item d-flex align-items-center justify-content-between border rounded mb-3 shadow-sm">
+      <div class="d-flex align-items-center gap-3">
+        <div style="width: 60px; height: 60px; background: #ddd; border-radius: 8px;"></div>
+        <div>
+          <strong><%= course.title %></strong>
+          <div class="small text-muted">
+            By <%= course.instructor %> - Last Updated: <%= course.updatedAt %><br>
+            ⭐ <%= course.rating %> Reviews | 👥 <%= course.students %> Students
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-danger btn-sm">Edit</button>
+        <form action="/institution/courses/<%= course._id %>?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+        </form>
+        <button class="btn btn-outline-danger btn-sm">View</button>
+      </div>
+    </div>
+    <% }) %>
+  </div>

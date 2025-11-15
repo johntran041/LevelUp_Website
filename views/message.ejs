@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/authentication/headTag', { title: 'Chat', stylesheet:
+    'chat-style.css' }) %> <%- include('partials/navbar') %>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <body>
+        <div class="container-fluid chat-container d-flex flex-column">
+            <div class="row flex-md-nowrap h-100 w-100">
+                <!-- Sidebar -->
+                <div class="col-12 col-md-3 col-lg-3 sidebar">
+                    <div class="sidebar-header">
+                        <h5 class="mb-0">Chat</h5>
+                    </div>
+
+                    <div class="search-container">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"
+                                ><i class="bi bi-search"></i
+                            ></span>
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="form-control border-0 bg-light"
+                                placeholder="Search user or message"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="contact-list">
+                        <% contacts.forEach(contact => { %>
+                        <div class="contact-wrapper">
+                            <a
+                                href="/messages?contactId=<%= contact._id %>"
+                                class="text-decoration-none text-dark contact-link"
+                            >
+                                <div
+                                    class="contact-item <%= selectedContact && contact._id.toString() === selectedContact._id.toString() ? 'active' : '' %>"
+                                    data-email="<%= contact.email %>"
+                                    data-message="<%= (contact.lastMessage || '') %>"
+                                >
+                                    <div
+                                        class="d-flex justify-content-between w-100"
+                                    >
+                                        <div class="d-flex">
+                                            <div class="avatar">
+                                                <i
+                                                    class="bi bi-person-fill"
+                                                ></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold">
+                                                    <%= contact.email %>
+                                                </div>
+                                                <div class="user-info">
+                                                    <%= contact.lastMessage ||
+                                                    'No messages yet' %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <button
+                                class="btn btn-sm delete-chat-btn"
+                                data-contact-id="<%= contact._id %>"
+                                onclick="confirmDeleteChat(event, '<%= contact._id %>', '<%= contact.email %>')"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <!-- Chat Content -->
+                <div class="col-12 col-md-9 col-lg-9 chat-content">
+                    <% if (selectedContact) { %>
+                    <div
+                        class="chat-header d-flex justify-content-between align-items-center"
+                    >
+                        <div class="d-flex align-items-center">
+                            <button
+                                class="btn btn-light d-md-none me-2"
+                                onclick="toggleSidebar()"
+                            >
+                                <i class="bi bi-list"></i>
+                            </button>
+                            <div class="avatar">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold">
+                                    <%= selectedContact.email %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="messages-container">
+                        <% messages.forEach(message => { %>
+                        <div
+                            class="message <%= message.sender.toString() === currentUserId.toString() ? 'sent' : 'received' %>"
+                        >
+                            <% if (message.sender.toString() !==
+                            currentUserId.toString()) { %>
+                            <div class="avatar">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <% } %>
+                            <div class="message-content">
+                                <%= message.text %> <% if (message.attachment) {
+                                %> <% if (message.attachment.endsWith('.jpg') ||
+                                message.attachment.endsWith('.jpeg') ||
+                                message.attachment.endsWith('.png')) { %>
+                                <img
+                                    src="<%= message.attachment %>"
+                                    alt="Image"
+                                    class="message-image"
+                                />
+                                <% } else { %>
+                                <a
+                                    href="<%= message.attachment %>"
+                                    target="_blank"
+                                    class="file-link"
+                                    >Download file</a
+                                >
+                                <% } %> <% } %>
+                            </div>
+                            <% if (message.sender.toString() ===
+                            currentUserId.toString()) { %>
+                            <div class="avatar">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <% } %>
+                        </div>
+                        <% }) %>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <form
+                            id="chatForm"
+                            class="d-flex w-100"
+                            method="POST"
+                            action="/message"
+                            enctype="multipart/form-data"
+                        >
+                            <input
+                                type="hidden"
+                                name="recipientId"
+                                value="<%= selectedContact._id %>"
+                            />
+                            <input
+                                type="file"
+                                id="imageInput"
+                                name="image"
+                                accept="image/*"
+                                style="display: none"
+                            />
+                            <input
+                                type="file"
+                                id="fileInput"
+                                name="file"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.txt"
+                                style="display: none"
+                            />
+                            <button
+                                class="btn btn-light me-2"
+                                type="button"
+                                onclick="document.getElementById('imageInput').click();"
+                            >
+                                <i class="bi bi-image"></i>
+                            </button>
+                            <button
+                                class="btn btn-light me-2"
+                                type="button"
+                                onclick="document.getElementById('fileInput').click();"
+                            >
+                                <i class="bi bi-paperclip"></i>
+                            </button>
+
+                            <input
+                                type="text"
+                                class="form-control input-message"
+                                name="text"
+                                placeholder="Write something"
+                                required
+                            />
+                            <button class="btn btn-primary ms-2" type="submit">
+                                <i class="bi bi-send-fill"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <% } else { %>
+                    <div
+                        class="d-flex justify-content-center align-items-center h-100"
+                    >
+                        <h4>Select a conversation to start chatting</h4>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+            const currentUserId = "<%= currentUserId %>";
+            const recipientId =
+                "<%= selectedContact ? selectedContact._id : '' %>";
+
+            if (recipientId) {
+                socket.emit("joinRoom", currentUserId);
+            }
+
+            const form = document.getElementById("chatForm");
+            const input = form.querySelector("input[name='text']");
+            const messagesContainer = document.querySelector(
+                ".messages-container"
+            );
+            const imageInput = document.getElementById("imageInput");
+            const fileInput = document.getElementById("fileInput");
+
+            function updateLastMessageInContactList(userId, messageText) {
+                const contactLink = document.querySelector(
+                    `.contact-wrapper a[href="/messages?contactId=${userId}"]`
+                );
+                if (contactLink) {
+                    const infoEl = contactLink.querySelector(".user-info");
+                    if (infoEl) {
+                        infoEl.textContent = messageText;
+                    }
+                }
+            }
+
+            function scrollToBottom() {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            window.addEventListener("DOMContentLoaded", scrollToBottom);
+
+            //Upload when a file is selected (for both image and regular files)
+            imageInput.addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    uploadFile(this.files[0]);
+                }
+            });
+
+            fileInput.addEventListener("change", function () {
+                if (this.files.length > 0) {
+                    uploadFile(this.files[0]);
+                }
+            });
+
+            // Function to handle file uploads
+            function uploadFile(file) {
+                // Show loading indicator or feedback
+                const loadingDiv = document.createElement("div");
+                loadingDiv.className = "message sent";
+                loadingDiv.innerHTML = `<div class="message-content">Uploading ${file.name}... <i class="bi bi-arrow-repeat spinning"></i></div>
+                                <div class="avatar"><i class="bi bi-person-fill"></i></div>`;
+                messagesContainer.appendChild(loadingDiv);
+                scrollToBottom();
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                fetch("/uploads", {
+                    method: "POST",
+                    body: formData,
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        // Remove loading indicator
+                        messagesContainer.removeChild(loadingDiv);
+
+                        // Create a full URL for the attachment
+                        const fileUrl = data.fileUrl;
+                        console.log("Uploaded file URL:", fileUrl);
+
+                        // Get message text
+                        const text = `Sent a file: ${file.name}`;
+
+                        // Send the message with attachment
+                        socket.emit("sendMessage", {
+                            senderId: currentUserId,
+                            recipientId,
+                            text: text,
+                            attachment: fileUrl,
+                        });
+
+                        // Create message element
+                        const msgEl = document.createElement("div");
+                        msgEl.className = "message sent";
+
+                        let attachmentHTML = "";
+                        if (file.type.startsWith("image/")) {
+                            attachmentHTML = `<img src="${fileUrl}" alt="Image" class="message-image">`;
+                        } else {
+                            attachmentHTML = `<a href="${fileUrl}" target="_blank" class="file-link">Download ${file.name}</a>`;
+                        }
+
+                        msgEl.innerHTML = `<div class="message-content">${text}<br>${attachmentHTML}</div>
+                                <div class="avatar"><i class="bi bi-person-fill"></i></div>`;
+                        messagesContainer.appendChild(msgEl);
+                        scrollToBottom();
+
+                        // Update the contact list
+                        updateLastMessageInContactList(recipientId, text);
+                    })
+                    .catch((error) => {
+                        console.error("File upload failed", error);
+                        // Remove loading indicator and show error
+                        messagesContainer.removeChild(loadingDiv);
+
+                        const errorEl = document.createElement("div");
+                        errorEl.className = "message sent error";
+                        errorEl.innerHTML = `<div class="message-content">Failed to upload ${file.name}. Please try again.</div>
+                                    <div class="avatar"><i class="bi bi-person-fill"></i></div>`;
+                        messagesContainer.appendChild(errorEl);
+                        scrollToBottom();
+
+                        alert("File upload failed: " + error.message);
+                    });
+            }
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const message = input.value;
+
+                if (!message.trim()) {
+                    return; // Don't send empty messages
+                }
+
+                socket.emit("sendMessage", {
+                    senderId: currentUserId,
+                    recipientId,
+                    text: message,
+                });
+
+                const msgEl = document.createElement("div");
+                msgEl.className = "message sent";
+                msgEl.innerHTML = `<div class="message-content">${message}</div><div class="avatar"><i class="bi bi-person-fill"></i></div>`;
+                messagesContainer.appendChild(msgEl);
+                scrollToBottom();
+                updateLastMessageInContactList(recipientId, message);
+                input.value = "";
+            });
+
+            socket.on("receiveMessage", (data) => {
+                console.log("Received message data:", data);
+                const activeContactId = recipientId;
+
+                if (data.senderId === activeContactId) {
+                    let attachmentHTML = "";
+                    if (data.attachment) {
+                        console.log("Processing attachment:", data.attachment);
+                        if (data.attachment.match(/\.(jpg|jpeg|png|gif)$/i)) {
+                            attachmentHTML = `<br><img src="${data.attachment}" alt="Image" class="message-image">`;
+                        } else {
+                            // Extract filename from path if possible
+                            const filename = data.attachment.split("/").pop();
+                            attachmentHTML = `<br><a href="${data.attachment}" target="_blank" class="file-link">Download ${filename}</a>`;
+                        }
+                    }
+
+                    const msgEl = document.createElement("div");
+                    msgEl.className = "message received";
+                    msgEl.innerHTML = `<div class="avatar"><i class="bi bi-person-fill"></i></div>
+                                <div class="message-content">${
+                                    data.text || ""
+                                }${attachmentHTML}</div>`;
+                    messagesContainer.appendChild(msgEl);
+                    scrollToBottom();
+                } else {
+                    showUnreadIndicator(data.senderId);
+                }
+
+                updateLastMessageInContactList(data.senderId, data.text);
+            });
+
+            function toggleSidebar() {
+                const sidebar = document.querySelector(".sidebar");
+                sidebar.classList.toggle("show");
+            }
+
+            document.addEventListener("click", function (event) {
+                const optionsMenu = document.getElementById("optionsMenu");
+                const optionsToggle = document.getElementById("optionsToggle");
+
+                if (
+                    optionsMenu &&
+                    optionsMenu.style.display !== "none" &&
+                    !optionsMenu.contains(event.target) &&
+                    !optionsToggle.contains(event.target)
+                ) {
+                    optionsMenu.style.display = "none";
+                }
+            });
+
+            // Delete chat functionality
+            function confirmDeleteChat(event, contactId, contactEmail) {
+                // Stop propagation if coming from sidebar
+                if (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                // Ask for confirmation
+                if (
+                    confirm(
+                        `Are you sure you want to delete your conversation with ${contactEmail}?`
+                    )
+                ) {
+                    // Make delete request
+                    fetch(`/chat/${contactId}`, {
+                        method: "DELETE",
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error("Failed to delete chat");
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                // If the currently selected contact is the one being deleted
+                                if (recipientId === contactId) {
+                                    // Clear messages from view
+                                    if (messagesContainer) {
+                                        messagesContainer.innerHTML = "";
+                                    }
+                                }
+
+                                // Update the contact in sidebar to show "No messages"
+                                const contactWrapper = document.querySelector(
+                                    `.contact-wrapper a[href="/messages?contactId=${contactId}"]`
+                                );
+                                if (contactWrapper) {
+                                    const infoEl =
+                                        contactWrapper.querySelector(
+                                            ".user-info"
+                                        );
+                                    if (infoEl) {
+                                        infoEl.textContent = "No messages yet";
+                                    }
+                                }
+
+                                // Show success notification
+                                showToast("Chat deleted successfully");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                            showToast("Failed to delete chat", "error");
+                        });
+                }
+            }
+
+            document
+                .getElementById("searchInput")
+                .addEventListener("input", function () {
+                    const searchTerm = this.value.toLowerCase();
+                    const contactWrappers =
+                        document.querySelectorAll(".contact-wrapper");
+
+                    contactWrappers.forEach((wrapper) => {
+                        const contactItem =
+                            wrapper.querySelector(".contact-item");
+                        const email = contactItem.getAttribute("data-email");
+                        const message =
+                            contactItem.getAttribute("data-message");
+
+                        if (
+                            email.toLowerCase().includes(searchTerm) ||
+                            (message &&
+                                message.toLowerCase().includes(searchTerm))
+                        ) {
+                            wrapper.style.display = "";
+                        } else {
+                            wrapper.style.display = "none";
+                        }
+                    });
+                });
+
+            // Toast notification function
+            function showToast(message, type = "success") {
+                const toastContainer =
+                    document.getElementById("toast-container");
+
+                const toast = document.createElement("div");
+                toast.className = `toast-notification ${type}`;
+                toast.textContent = message;
+
+                toastContainer.appendChild(toast);
+
+                // Animate in
+                setTimeout(() => {
+                    toast.classList.add("show");
+                }, 10);
+
+                // Animate out after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove("show");
+                    setTimeout(() => {
+                        toastContainer.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+
+            const style = document.createElement("style");
+            style.textContent = `
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            .message.error .message-content {
+                background-color: #ffdddd;
+            }
+            .message-image {
+                max-width: 100%;
+                max-height: 300px;
+                margin-top: 8px;
+                border-radius: 8px;
+            }
+            .file-link {
+                display: inline-block;
+                padding: 5px 10px;
+                background: #f0f0f0;
+                border-radius: 4px;
+                margin-top: 8px;
+                text-decoration: none;
+                color: #0066cc;
+            }
+            .file-link:hover {
+                background: #e0e0e0;
+            }
+            
+            /* Contact item with delete button */
+            .contact-wrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            
+            .contact-wrapper .contact-link {
+                flex-grow: 1;
+            }
+            
+            .delete-chat-btn {
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                font-size: 0.8rem;
+                margin-right: 10px;
+                color: #dc3545;
+                background: transparent;
+                border: none;
+            }
+            
+            .contact-wrapper:hover .delete-chat-btn {
+                opacity: 1;
+            }
+            
+            .delete-chat-btn:hover {
+                background: rgba(220, 53, 69, 0.1);
+            }
+            
+            /* Toast notifications */
+            #toast-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 9999;
+            }
+            
+            .toast-notification {
+                padding: 12px 20px;
+                margin-bottom: 10px;
+                background-color: #28a745;
+                color: white;
+                border-radius: 4px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                transform: translateY(100px);
+                opacity: 0;
+                transition: all 0.3s ease;
+            }
+            
+            .toast-notification.show {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            
+            .toast-notification.error {
+                background-color: #dc3545;
+            }
+            
+            /* Red dot unread indicator */
+            .unread-badge {
+                width: 10px;
+                height: 10px;
+                background: red;
+                border-radius: 50%;
+                display: inline-block;
+                margin-left: 5px;
+            }
+        `;
+            document.head.appendChild(style);
+
+            // 🔴 Red dot unread indicator
+            function showUnreadIndicator(userId) {
+                const contactLink = document.querySelector(
+                    `.contact-wrapper a[href="/messages?contactId=${userId}"]`
+                );
+                if (contactLink) {
+                    let badge = contactLink.querySelector(".unread-badge");
+                    if (!badge) {
+                        badge = document.createElement("span");
+                        badge.className = "unread-badge";
+                        const target = contactLink.querySelector(".fw-bold");
+                        if (target) {
+                            target.appendChild(badge);
+                        }
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

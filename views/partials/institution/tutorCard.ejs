@@ -1,0 +1,32 @@
+<div class="container-fluid p-4">
+    <table class="table table-hover bg-white rounded shadow-sm">
+<thead>
+    <tr>
+      <th>Name</th>
+      <th>Teaching Field</th>
+      <th>Experience</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<% tutors.forEach(tutor => { %>
+    <tr>
+    <td>
+      <div class="d-flex align-items-center gap-2">
+        <div style="width: 32px; height: 32px; background: #ccc; border-radius: 50%;"></div>
+        <div>
+          <strong><%= tutor.name %></strong><br>
+          <small class="text-muted"><%= tutor.email %></small>
+        </div>
+      </div>
+    </td>
+    <td>
+        <% tutor.field.forEach(f => { %>
+          <span class="teaching-tag"><%= f %></span>
+        <% }) %>
+      </td>
+    <td><%= tutor.exp %></td>
+    <td><a href="/institution/tutorDetail" class="text-primary">Details</a></td>
+  </tr>
+  <% }) %>
+</tbody>

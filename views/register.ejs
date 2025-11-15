@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/authentication/headTag', { title: 'Register',
+    stylesheet: 'register.css' }) %>
+    <body>
+        <div class="container-fluid p-0">
+            <div class="row g-0 form-container">
+                <!-- Left image section -->
+                <div class="col-md-6 d-none d-md-block auth-image">
+                    <img
+                        src="/images/image.png"
+                        alt="Student with tablet"
+                        class="img-fluid"
+                    />
+                </div>
+
+                <!-- Right form section -->
+                <div
+                    class="col-md-6 col-12 bg-white form-section border border-dark"
+                >
+                    <div class="form-content">
+                        <h2 class="text-center mb-4">Register new account</h2>
+                        <% if (typeof error !== "undefined") { %>
+                        <div class="alert alert-danger text-center">
+                            <%= error %>
+                        </div>
+                        <% } %>
+                        <form
+                            id="registerForm"
+                            method="POST"
+                            action="/auth/register"
+                            novalidate
+                        >
+                            <div class="row mb-3">
+                                <div class="col-sm-6">
+                                    <label
+                                        for="userFirstName"
+                                        class="form-label"
+                                        >First Name</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="userFirstName"
+                                        name="userFirstName"
+                                        placeholder="Your first name"
+                                    />
+                                    <div
+                                        id="userFirstNameError"
+                                        class="text-danger mt-1"
+                                    ></div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="userLastName" class="form-label"
+                                        >Last Name</label
+                                    >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="userLastName"
+                                        name="userLastName"
+                                        placeholder="Your last name"
+                                    />
+                                    <div
+                                        id="userLastNameError"
+                                        class="text-danger mt-1"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label"
+                                    >Email</label
+                                >
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="userEmail"
+                                    name="userEmail"
+                                    placeholder="Your Email"
+                                />
+                                <div
+                                    id="userEmailError"
+                                    class="text-danger mt-1"
+                                ></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="userPassword" class="form-label"
+                                    >Password</label
+                                >
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="userPassword"
+                                    name="userPassword"
+                                    placeholder="Your password"
+                                />
+                                <div
+                                    id="userPasswordError"
+                                    class="text-danger mt-1"
+                                ></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label"
+                                    >Confirm password</label
+                                >
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="confirmPassword"
+                                    placeholder="Your confirmed password"
+                                />
+                                <div
+                                    id="confirmPasswordError"
+                                    class="text-danger mt-1"
+                                ></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label"
+                                    >Choose your role:</label
+                                >
+                                <div
+                                    class="d-flex gap-4 justify-content-center"
+                                >
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="userRole"
+                                            id="student"
+                                            value="Student"
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="student"
+                                            >Student</label
+                                        >
+                                    </div>
+                                    <div class="form-check">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="userRole"
+                                            id="instructor"
+                                            value="Instructor"
+                                        />
+                                        <label
+                                            class="form-check-label"
+                                            for="instructor"
+                                            >Instructor</label
+                                        >
+                                    </div>
+                                </div>
+                                <div
+                                    id="userRoleError"
+                                    class="text-danger text-center mt-1"
+                                ></div>
+                            </div>
+
+                            <!--RECAPTCHA BOX -->
+                            <div class="mb-3 d-flex justify-content-center">
+                                <div
+                                    class="border border-dark rounded px-4 py-3"
+                                    style="background-color: #fff"
+                                >
+                                    <div
+                                        class="g-recaptcha"
+                                        data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div
+                                id="captchaError"
+                                class="text-danger text-center mb-3"
+                            ></div>
+
+                            <button
+                                type="submit"
+                                class="btn w-100 py-2 mt-4"
+                                style="background-color: #e07a5f; color: #fff"
+                            >
+                                Register
+                            </button>
+
+                            <p class="text-center mt-3">
+                                Already have an account?
+                                <a
+                                    href="/auth/login"
+                                    class="text-decoration-none"
+                                    >Login here</a
+                                >
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://www.google.com/recaptcha/api.js"
+            async
+            defer
+        ></script>
+        <script src="/js/register.js"></script>
+    </body>
+</html>

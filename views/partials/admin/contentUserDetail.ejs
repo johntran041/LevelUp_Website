@@ -1,0 +1,174 @@
+<main class="col-md-10 px-5 py-2 bg-white min-vh-100">
+    <!-- Header: Back Button + Page Title (Centered) -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <a href="/admin/users" class="btn btn-light rounded-pill shadow-sm px-3 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+        <div class="flex-grow-1 text-center">
+            <h3 class="fw-semibold m-0" style="font-size: 1.8rem">User Profile</h3>
+        </div>
+        <div style="width: 150px"></div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Profile Section -->
+    <form action="/admin/users/update/<%= user._id %>" method="POST" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <!-- Left: Form -->
+            <div class="col-md-8">
+                <h5 class="mb-3 fw-semibold text-muted">Basic</h5>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">First Name</label>
+                    <input type="text" name="firstName" class="form-control rounded-3 shadow-sm" value="<%= user.firstName %>" placeholder="First Name" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Last Name</label>
+                    <input type="text" name="lastName" class="form-control rounded-3 shadow-sm" value="<%= user.lastName %>" placeholder="Last Name" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Email</label>
+                    <input type="email" name="email" class="form-control rounded-3 shadow-sm" value="<%= user.email %>" placeholder="Email" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Role</label>
+                    <select name="role" class="form-select rounded-3 shadow-sm" required>
+                        <option value="Student" <%= user.role === 'Student' ? 'selected' : '' %>>Student</option>
+                        <option value="Instructor" <%= user.role === 'Instructor' ? 'selected' : '' %>>Instructor</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Date Joined</label>
+                    <input type="text" class="form-control rounded-3 shadow-sm text-secondary bg-light" value="<%= new Date(user.dateJoined).toLocaleDateString('en-GB') %>" readonly />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Headline</label>
+                    <input type="text" name="headline" class="form-control rounded-3 shadow-sm" value="<%= user.headline || '' %>" placeholder="Professional Headline" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Description</label>
+                    <textarea name="description" rows="3" class="form-control rounded-3 shadow-sm" placeholder="Tell us about yourself..."><%= user.description || '' %></textarea>
+                </div>
+             <% if (coursesInstructing.length > 0 || coursesStudying.length > 0) { %>
+    <hr class="my-4" />
+
+    <% if (coursesInstructing.length > 0) { %>
+        <div class="mb-5 p-4 rounded-4 shadow-sm border border-1 bg-light-subtle">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="fw-bold text-dark mb-0">
+                    📘 Courses Instructing
+                </h5>
+                <span class="badge bg-dark-subtle text-dark fw-semibold px-3 py-1">
+                    Total: <%= coursesInstructing.length %>
+                </span>
+            </div>
+            <table class="table table-hover table-bordered text-center align-middle rounded-3 overflow-hidden">
+                <thead class="table-dark-subtle text-dark fw-semibold">
+                    <tr>
+                        <th>#</th>
+                        <th class="text-start">Course Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% coursesInstructing.forEach((course, i) => { %>
+                        <tr>
+                            <td><%= i + 1 %></td>
+                            <td class="text-start">
+                                <a href="/admin/courses/<%= course._id %>" class="text-decoration-none text-primary fw-semibold">
+                                    <%= course.name %>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge text-bg-<%= 
+                                    course.status === 'Finished' ? 'success' :
+                                    course.status === 'On Going' ? 'warning' : 'secondary' %>">
+                                    <%= course.status %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+
+    <% if (coursesStudying.length > 0) { %>
+        <div class="mb-5 p-4 rounded-4 shadow-sm border border-1 bg-light-subtle">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h5 class="fw-bold text-dark mb-0">
+                    🎓 Courses Studying
+                </h5>
+                <span class="badge bg-dark-subtle text-dark fw-semibold px-3 py-1">
+                    Total: <%= coursesStudying.length %>
+                </span>
+            </div>
+            <table class="table table-hover table-bordered text-center align-middle rounded-3 overflow-hidden">
+                <thead class="table-dark-subtle text-dark fw-semibold">
+                    <tr>
+                        <th>#</th>
+                        <th class="text-start">Course Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% coursesStudying.forEach((course, i) => { %>
+                        <tr>
+                            <td><%= i + 1 %></td>
+                            <td class="text-start">
+                                <a href="/admin/courses/<%= course._id %>" class="text-decoration-none text-primary fw-semibold">
+                                    <%= course.name %>
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge text-bg-<%= 
+                                    course.status === 'Finished' ? 'success' :
+                                    course.status === 'On Going' ? 'warning' : 'secondary' %>">
+                                    <%= course.status %>
+                                </span>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } %>
+<% } %>
+            </div>
+
+        <!-- Right: Avatar + Upload -->
+        <div class="col-md-4 d-flex flex-column align-items-center justify-content-start">
+            <div class="avatar-wrapper rounded-circle shadow-sm mb-3">
+                <img
+                    src="<%= user.avatar || 'https://via.placeholder.com/150' %>"
+                    alt="User Avatar"
+                    class="img-fluid"
+                />
+            </div>
+
+    <div class="mb-3 w-100 text-center">
+        <label class="form-label h4 fw-semibold">Upload Avatar</label>
+        <input
+            type="file"
+            name="avatar"
+            class="form-control shadow-sm"
+            accept="image/*"
+        />
+    </div>
+</div>
+
+        </div>
+
+        <div class="text-center d-flex justify-content-center gap-3 mb-4">
+            <button type="submit" class="btn btn-dark rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 220px; max-width: 100%">Update</button>
+            <% if (user.status === 'active') { %>
+                <button type="button" class="btn btn-warning rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 220px" id="archive-btn" data-id="<%= user._id %>">Archive</button>
+            <% } else { %>
+                <button type="button" class="btn btn-success rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 220px" id="reactivate-btn" data-id="<%= user._id %>">Open Account</button>
+            <% } %>
+            <button type="button" class="btn btn-danger rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 220px" id="delete-btn" data-id="<%= user._id %>">Delete</button>
+        </div>
+    </form>
+</main>

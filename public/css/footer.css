@@ -1,0 +1,16 @@
+/* Ensure that the body takes up full height */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Ensure the main content area takes up available space */
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Push the footer to the bottom if there's not enough content */
+footer {
+  margin-top: auto; /* Pushes footer to the bottom */
+}

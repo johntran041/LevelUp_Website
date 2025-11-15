@@ -1,0 +1,133 @@
+<main class="col-md-10 px-5 py-2 bg-white min-vh-100">
+    <!-- Header: Back Button + Page Title (Centered) -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <a
+                href="/admin/courses"
+                class="btn btn-light rounded-pill shadow-sm px-3 py-2 d-inline-flex align-items-center gap-2"
+            >
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <div class="flex-grow-1 text-center">
+            <h3 class="fw-semibold m-0" style="font-size: 1.8rem">
+                Add New Course
+            </h3>
+        </div>
+
+        <div style="width: 150px"></div>
+    </div>
+
+    <hr class="my-4" />
+
+    <form id="course-form" action="/admin/courses/add" method="POST">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h5 class="mb-3 fw-semibold text-muted">Course Details</h5>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control rounded-3 shadow-sm w-100"
+                        placeholder="Course Name"
+                        required
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold"
+                        >Instructor</label
+                    >
+                    <select
+                        name="author"
+                        class="form-select rounded-3 shadow-sm w-100"
+                        required
+                    >
+                        <% instructors.forEach(ins => { %>
+                        <option value="<%= ins._id %>">
+                            <%= ins.firstName %> <%= ins.lastName %>
+                        </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold"
+                        >Add Students</label
+                    >
+                    <div class="d-flex gap-2">
+                        <select
+                            id="student-select"
+                            class="form-select rounded-3 shadow-sm w-100"
+                        >
+                            <option value="">-- Select a student --</option>
+                            <% students.forEach(std => { %>
+                            <option
+                                value="<%= std._id %>"
+                                data-email="<%= std.email %>"
+                            >
+                                <%= std.firstName %> <%= std.lastName %>
+                            </option>
+                            <% }) %>
+                        </select>
+                        <button
+                            type="button"
+                            id="add-student-btn"
+                            class="btn btn-dark"
+                        >
+                            Add
+                        </button>
+                    </div>
+                </div>
+
+                <table
+                    class="table table-bordered table-sm text-center"
+                    id="student-table"
+                >
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <input
+                    type="hidden"
+                    name="studentsEnrolled"
+                    id="studentsEnrolledInput"
+                />
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold"
+                        >Price (USD)</label
+                    >
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="price"
+                        class="form-control rounded-3 shadow-sm w-100"
+                        placeholder="Price"
+                        required
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button
+                type="submit"
+                class="btn btn-dark rounded-pill shadow-sm px-4 py-2 fw-semibold w-100"
+                style="max-width: 600px"
+            >
+                Create Course
+            </button>
+        </div>
+    </form>
+</main>

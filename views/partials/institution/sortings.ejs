@@ -1,0 +1,14 @@
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <form method="GET" action="/institution/manageTutors" class="d-flex align-items-center">
+        <select name="sort" class="form-select form-select-sm me-2" onchange="this.form.submit()">
+          <option disabled <%= !sort ? 'selected' : '' %>>Sort by</option>
+          <option value="rating_desc" <%= sort === 'rating_desc' ? 'selected' : '' %>>Rating: High to Low</option>
+          <option value="rating_asc" <%= sort === 'rating_asc' ? 'selected' : '' %>>Rating: Low to High</option>
+          <option value="students_desc" <%= sort === 'students_desc' ? 'selected' : '' %>>Students: High to Low</option>
+          <option value="students_asc" <%= sort === 'students_asc' ? 'selected' : '' %>>Students: Low to High</option>
+        </select>
+      </form>
+      <!-- <button class="btn btn-outline-danger btn-sm">+ Add Course</button> -->
+
+      </div>

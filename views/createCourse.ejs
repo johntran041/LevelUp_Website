@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create New Course - LearnNow</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="/css/createCourse.css"/>
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <div class="container my-5">
+    <div class="form-container">
+      <div class="text-center mb-4">
+        <h2>Create New Course</h2>
+        <p class="text-muted">Share your knowledge with the world</p>
+      </div>
+
+      <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger"><%= error %></div>
+      <% } %>
+
+      <form action="/courses/create" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+        <!-- Title -->
+        <div class="mb-3">
+          <label for="title" class="form-label required-field">Course Title</label>
+          <input type="text" class="form-control" id="title" name="title" required value="<%= formData?.title || '' %>"/>
+          <div class="invalid-feedback">Please provide a course title.</div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label required-field">Course Description</label>
+          <textarea class="form-control" id="description" name="description" rows="4" required><%= formData?.description || '' %></textarea>
+          <div class="invalid-feedback">Please provide a course description.</div>
+        </div>
+
+        <!-- Learning Outcomes -->
+        <div class="mb-3">
+          <label for="learningOutcomes" class="form-label">Learning Outcomes <small class="text-muted">(one per line)</small></label>
+          <textarea class="form-control" id="learningOutcomes" name="learningOutcomes" rows="3"><%= formData?.learningOutcomes || '' %></textarea>
+        </div>
+
+        <div class="row">
+          <!-- Price -->
+          <div class="col-md-6 mb-3">
+            <label for="price" class="form-label required-field">Price</label>
+            <input type="number" class="form-control" id="price" name="price" min="0" step="0.01" required value="<%= formData?.price || '' %>"/>
+            <div class="invalid-feedback">Please provide a price.</div>
+          </div>
+
+          <!-- Category -->
+          <div class="col-md-6 mb-3">
+            <label for="category" class="form-label required-field">Category</label>
+            <select class="form-select" id="category" name="category" required>
+              <option value="" disabled <%= !formData?.category ? 'selected' : '' %>>Select a category</option>
+              <% categories.forEach(cat => { %>
+                <option value="<%= cat %>" <%= formData?.category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% }) %>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="mb-3">
+          <label for="courseImage" class="form-label required-field">Course Image</label>
+          <input type="file" class="form-control" id="courseImage" name="courseImage" accept="image/*" required/>
+          <div class="form-text">Upload a thumbnail for the course (max 5MB)</div>
+          <div class="invalid-feedback">Please upload an image.</div>
+        </div>
+
+        <!-- Course Content (Sections and Lessons) -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Course Content</label>
+          <div id="sections-container"></div>
+          <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addSection()">+ Add Section</button>
+        </div>
+
+
+        <!-- Submit -->
+        <div class="d-grid d-md-flex justify-content-md-end mt-4 gap-2">
+          <a href="/courses" class="btn btn-outline-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary">Create Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+
+    let sectionCount = 0;
+
+    function addSection() {
+      const container = document.getElementById('sections-container');
+      const sectionId = `section-${sectionCount}`;
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'border p-3 rounded mb-3 bg-light position-relative';
+      sectionDiv.setAttribute('data-section-index', sectionCount);
+
+      sectionDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label class="form-label mb-0">Section Title</label>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSection(this)">Delete Section</button>
+        </div>
+        <input type="text" name="sections[${sectionCount}][title]" class="form-control mb-2" required>
+        <div id="${sectionId}" class="lesson-list ps-3"></div>
+        <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addLesson('${sectionId}', ${sectionCount})">+ Add Lesson</button>
+      `;
+
+      container.appendChild(sectionDiv);
+      sectionCount++;
+    }
+
+    function deleteSection(button) {
+      const section = button.closest('.border');
+      section.remove();
+    }
+
+    function addLesson(sectionId, sectionIndex) {
+      const lessonList = document.getElementById(sectionId);
+      const lessonCount = lessonList.children.length;
+
+      const lessonDiv = document.createElement('div');
+      lessonDiv.className = 'mb-2 d-flex align-items-center gap-2';
+
+      lessonDiv.innerHTML = `
+        <input type="text" name="sections[${sectionIndex}][lessons][${lessonCount}][title]" class="form-control" placeholder="Lesson Title" required>
+        <input type="time" step="1" name="sections[${sectionIndex}][lessons][${lessonCount}][duration]" class="form-control" style="max-width: 120px;" required>
+        <select name="sections[${sectionIndex}][lessons][${lessonCount}][type]" class="form-select" style="max-width: 120px;" required>
+          <option value="video">Video</option>
+          <option value="pdf">PDF</option>
+          <option value="text">Text</option>
+        </select>
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteLesson(this)">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+
+      lessonList.appendChild(lessonDiv);
+    }
+
+    function deleteLesson(button) {
+      const lesson = button.closest('.d-flex');
+      lesson.remove();
+    }
+  </script>
+
+</body>
+</html>

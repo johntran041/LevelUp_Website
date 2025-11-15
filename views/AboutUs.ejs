@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" data-user-theme="<%= user ? user.theme : 'light' %>">
+    <head>
+        <meta charset="UTF-8" />
+        <title>About Us</title>
+        
+        <!-- Theme Loader - Must be the first script -->
+        <script src="/js/themeLoader.js"></script>
+        
+        <!-- Bootstrap 5 CSS CDN -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        
+        <!-- Bootstrap Icons CDN -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+            rel="stylesheet"
+        />
+        
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/navBarStyle.css" />
+        <link rel="stylesheet" href="/css/AboutUs.css" />
+        <link rel="stylesheet" href="/css/darkMode.css" />
+    </head>
+    
+    <body class="<%= user ? user.theme : 'light' %>" <% if (user && user._id) { %>data-user-id="<%= user._id %>"<% } %>>
+        <!-- Include Nav Bar -->
+        <%- include('partials/navbar') %>
+
+
+
+
+<main>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="main-title">About Us</h1>
+      <div class="breadcrumb">
+        <a href="/" style="display: inline-block; padding: 5px 10px; position: relative; z-index: 100;">Home</a> / <a style="color: grey;" href="/aboutUs">About Us</a>
+      </div>
+    </div>
+  </section>
+
+   <!-- Our Story Section -->
+   <section class="our-story">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <h2 class="section-title">OUR STORY</h2>
+          <p class="story-text">
+            It started with a simple question: Why isn’t learning easier for everyone?
+
+            From that spark, LevelUp was born—an online space where anyone, from any background, can learn what they love, when they want. No classrooms, no pressure—just the freedom to grow on your terms.
+            
+            We’re a team of dreamers, doers, and lifelong learners, building a platform that makes education feel personal, flexible, and empowering.
+            
+            Because we believe learning should never be out of reach.
+          </p>
+        </div>
+        <div class="col-lg-6">
+          <div class="story-image">
+            <img src="/images/groupStudy.jpg" alt="Plants collection" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Values Section -->
+  <section class="mission-values">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center mb-5">
+          <h2 class="section-title">OUR MISSION & VALUES</h2>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="mission-box">
+            <h3 class="box-title">Our Mission</h3>
+            <p>To make learning accessible, flexible, and empowering for everyone. We’re here to help individuals grow through knowledge—anytime, anywhere—by providing high-quality educational experiences that fit into real life.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-6">
+          <div class="values-box">
+            <h3 class="box-title">Our Values</h3>
+            <ul class="values-list">
+              <li><strong>Accessibility</strong> -  We believe learning should be available to all, regardless of background or location.</li>
+              <li><strong>Flexibility</strong> - Education should fit your schedule, not the other way around.</li>
+              <li><strong>Quality</strong> -  We deliver well-crafted, expert-led content that truly makes a difference.</li>
+              <li><strong>Growth</strong> -  We support every learner’s journey, from curiosity to mastery.</li>
+              <li><strong>Community</strong> - We build connections through shared goals, collaboration, and lifelong learning.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Why Choose Us Section with Stats -->
+  <section class="why-us-section">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">WHY CHOOSE US</h2>
+      
+      <div class="row stats-row">
+        <div class="col-md-3 col-6">
+          <div class="stat-box">
+            <div class="stat-number">
+              <span class="counter" data-count="500">0</span>+
+            </div>
+            <div class="stat-title">Line of Codes</div>
+          </div>
+        </div>
+        
+        <div class="col-md-3 col-6">
+          <div class="stat-box">
+            <div class="stat-number">
+              <span class="counter" data-count="5">0</span>+
+            </div>
+            <div class="stat-title">Happy Customers</div>
+          </div>
+        </div>
+        
+        <div class="col-md-3 col-6">
+          <div class="stat-box">
+            <div class="stat-number">
+              <span class="counter" data-count="3">0</span>
+            </div>
+            <div class="stat-title">Months Experience</div>
+          </div>
+        </div>
+        
+        <div class="col-md-3 col-6">
+          <div class="stat-box">
+            <div class="stat-number">
+              <span class="counter" data-count="4">0</span>
+            </div>
+            <div class="stat-title">Web Developers</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt-5">
+        <div class="col-lg-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-tree"></i> 
+            </div>
+            <h3> Learn on Your Terms</h3>
+            <p>Our flexible online platform lets you study anytime, anywhere—perfect for busy schedules and self-paced learning.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-truck"></i>   
+            </div>
+            <h3>Expert-Led Courses</h3>
+            <p>Every course is designed and taught by industry professionals, ensuring you gain real-world skills that matter.</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="feature-box">
+            <div class="feature-icon">
+                <i class="bi bi-headset"></i> 
+            </div>
+            <h3>Supportive Learning Community</h3>
+            <p>You're never alone—join a vibrant community of learners and get help, motivation, and guidance whenever you need it</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Members Section -->
+  <section class="team-section">
+    <div class="container">
+      <h2 class="section-title text-center">ALL MEMBERS</h2>
+      
+      <div class="team-carousel">
+        <div class="team-carousel-inner">
+          <!-- Team Member 1 -->
+          <div class="team-member">
+            <div class="member-image">
+              <img src="/images/Student1.jpg" alt="Jeremy Scott" class="img-fluid">
+            </div>
+            <h3 class="member-name">KHOA</h3>
+            <p class="member-position">Web Developer</p>
+
+          </div>
+          
+          <!-- Team Member 2 -->
+          <div class="team-member">
+            <div class="member-image">
+              <img src="/images/Student3.jpg" alt="Sergey Brin" class="img-fluid">
+            </div>
+            <h3 class="member-name">JOHN</h3>
+            <p class="member-position">Web Developer</p>
+
+          </div>
+          
+          <!-- Team Member 3 -->
+          <div class="team-member">
+            <div class="member-image">
+              <img src="/images/Student2.jpg" alt="Huston Nash" class="img-fluid">
+            </div>
+            <h3 class="member-name">JOANA</h3>
+            <p class="member-position">Web Developer</p>
+
+          </div>
+          
+          <!-- Team Member 4 -->
+          <div class="team-member">
+            <div class="member-image">
+              <img src="/images/Student4.jpg" alt="Lariry" class="img-fluid">
+            </div>
+            <h3 class="member-name">ALEX</h3>
+            <p class="member-position">Web Developer</p>
+
+          </div>
+        </div>
+        
+        <!-- Carousel Controls -->
+        <button class="carousel-control carousel-prev" id="team-prev"></button>
+        <button class="carousel-control carousel-next" id="team-next"></button>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="country-section py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">We Reach Learners From</h2>
+      <div class="row justify-content-center">
+        <% asianCountries.forEach(country => { %>
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center mb-4">
+            <img src="<%= country.flag %>" alt="<%= country.name %> Flag" class="img-fluid border rounded shadow-sm" style="height: 60px; object-fit: contain;">
+            <p class="mt-2 mb-0 fw-medium"><%= country.name %></p>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+  
+  
+
+ 
+>>>>>>> origin/AboutUS
+
+        <!-- Our Story Section -->
+        <section class="our-story">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h2 class="section-title">OUR STORY</h2>
+                        <p class="story-text">
+                            It started with a simple question: Why isn’t
+                            learning easier for everyone? From that spark,
+                            LevelUp was born—an online space where anyone, from
+                            any background, can learn what they love, when they
+                            want. No classrooms, no pressure—just the freedom to
+                            grow on your terms. We’re a team of dreamers, doers,
+                            and lifelong learners, building a platform that
+                            makes education feel personal, flexible, and
+                            empowering. Because we believe learning should never
+                            be out of reach.
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="story-image">
+                            <img
+                                src="/images/groupStudy.jpg"
+                                alt="Plants collection"
+                                class="img-fluid"
+                            />
+                        </div>
+=======
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <h1 class="main-title">About Us</h1>
+                    <div class="breadcrumb">
+                        <a
+                            href="/"
+                            style="
+                                display: inline-block;
+                                padding: 5px 10px;
+                                position: relative;
+                                z-index: 100;
+                            "
+                            >Home</a
+                        >
+                        / <a style="color: grey" href="/aboutUs">About Us</a>
+>>>>>>> testing-branch
+                    </div>
+                </div>
+            </section>
+
+            <!-- Our Story Section -->
+            <section class="our-story">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h2 class="section-title">OUR STORY</h2>
+                            <p class="story-text">
+                                It started with a simple question: Why isn't
+                                learning easier for everyone? From that spark,
+                                LevelUp was born—an online space where anyone, from
+                                any background, can learn what they love, when they
+                                want. No classrooms, no pressure—just the freedom to
+                                grow on your terms. We're a team of dreamers, doers,
+                                and lifelong learners, building a platform that
+                                makes education feel personal, flexible, and
+                                empowering. Because we believe learning should never
+                                be out of reach.
+                            </p>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="story-image">
+                                <img
+                                    src="/images/groupStudy.jpg"
+                                    alt="Plants collection"
+                                    class="img-fluid"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mission & Values Section -->
+            <section class="mission-values">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 text-center mb-5">
+                            <h2 class="section-title">OUR MISSION & VALUES</h2>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mission-box">
+                                <h3 class="box-title">Our Mission</h3>
+                                <p>
+                                    To make learning accessible, flexible, and
+                                    empowering for everyone. We're here to help
+                                    individuals grow through knowledge—anytime,
+                                    anywhere—by providing high-quality educational
+                                    experiences that fit into real life.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="values-box">
+                                <h3 class="box-title">Our Values</h3>
+                                <ul class="values-list">
+                                    <li>
+                                        <strong>Accessibility</strong> - We believe
+                                        learning should be available to all,
+                                        regardless of background or location.
+                                    </li>
+                                    <li>
+                                        <strong>Flexibility</strong> - Education
+                                        should fit your schedule, not the other way
+                                        around.
+                                    </li>
+                                    <li>
+                                        <strong>Quality</strong> - We deliver
+                                        well-crafted, expert-led content that truly
+                                        makes a difference.
+                                    </li>
+                                    <li>
+                                        <strong>Growth</strong> - We support every
+                                        learner's journey, from curiosity to
+                                        mastery.
+                                    </li>
+                                    <li>
+                                        <strong>Community</strong> - We build
+                                        connections through shared goals,
+                                        collaboration, and lifelong learning.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Choose Us Section with Stats -->
+            <section class="why-us-section">
+                <div class="container">
+                    <h2 class="section-title text-center mb-5">WHY CHOOSE US</h2>
+
+                    <div class="row stats-row">
+                        <div class="col-md-3 col-6">
+                            <div class="stat-box">
+                                <div class="stat-number">
+                                    <span class="counter" data-count="500">0</span>+
+                                </div>
+                                <div class="stat-title">Line of Codes</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <div class="stat-box">
+                                <div class="stat-number">
+                                    <span class="counter" data-count="5">0</span>+
+                                </div>
+                                <div class="stat-title">Happy Customers</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <div class="stat-box">
+                                <div class="stat-number">
+                                    <span class="counter" data-count="3">0</span>
+                                </div>
+                                <div class="stat-title">Months Experience</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <div class="stat-box">
+                                <div class="stat-number">
+                                    <span class="counter" data-count="4">0</span>
+                                </div>
+                                <div class="stat-title">Web Developers</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-lg-4">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="bi bi-tree"></i>
+                                </div>
+                                <h3>Learn on Your Terms</h3>
+                                <p>
+                                    Our flexible online platform lets you study
+                                    anytime, anywhere—perfect for busy schedules and
+                                    self-paced learning.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="bi bi-truck"></i>
+                                </div>
+                                <h3>Expert-Led Courses</h3>
+                                <p>
+                                    Every course is designed and taught by industry
+                                    professionals, ensuring you gain real-world
+                                    skills that matter.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="feature-box">
+                                <div class="feature-icon">
+                                    <i class="bi bi-headset"></i>
+                                </div>
+                                <h3>Supportive Learning Community</h3>
+                                <p>
+                                    You're never alone—join a vibrant community of
+                                    learners and get help, motivation, and guidance
+                                    whenever you need it
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team Members Section -->
+            <section class="team-section">
+                <div class="container">
+                    <h2 class="section-title text-center">ALL MEMBERS</h2>
+
+                    <div class="team-carousel">
+                        <div class="team-carousel-inner">
+                            <!-- Team Member 1 -->
+                            <div class="team-member">
+                                <div class="member-image">
+                                    <img
+                                        src="/images/Student3.jpg"
+                                        alt="Sergey Brin"
+                                        class="img-fluid"
+                                    />
+                                </div>
+                                <h3 class="member-name">JOHN</h3>
+                                <p class="member-position">Project Manager</p>
+                            </div>
+
+                            <!-- Team Member 2 -->
+                            <div class="team-member">
+                                <div class="member-image">
+                                    <img
+                                        src="/images/Student1.jpg"
+                                        alt="Jeremy Scott"
+                                        class="img-fluid"
+                                    />
+                                </div>
+                                <h3 class="member-name">KHOA</h3>
+                                <p class="member-position">Web Developer</p>
+                            </div>
+                            
+                            <!-- Team Member 3 -->
+                            <div class="team-member">
+                                <div class="member-image">
+                                    <img
+                                        src="/images/Student2.jpg"
+                                        alt="Huston Nash"
+                                        class="img-fluid"
+                                    />
+                                </div>
+                                <h3 class="member-name">JOANA</h3>
+                                <p class="member-position">Web Developer</p>
+                            </div>
+
+                            <!-- Team Member 4 -->
+                            <div class="team-member">
+                                <div class="member-image">
+                                    <img
+                                        src="/images/Student4.jpg"
+                                        alt="Lariry"
+                                        class="img-fluid"
+                                    />
+                                </div>
+                                <h3 class="member-name">ALEX</h3>
+                                <p class="member-position">Technical Leader</p>
+                            </div>
+                        </div>
+
+                        <!-- Carousel Controls -->
+                        <button
+                            class="carousel-control carousel-prev"
+                            id="team-prev"
+                        ></button>
+                        <button
+                            class="carousel-control carousel-next"
+                            id="team-next"
+                        ></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section class="testimonials-section">
+                <div class="container">
+                    <h2 class="section-title text-center mb-5">
+                        WHAT OUR CLIENTS SAY
+                    </h2>
+
+                    <div class="testimonials-carousel">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="testimonial-box">
+                                    <p class="testimonial-text">
+                                        "This platform gave me the flexibility I
+                                        needed to learn while working full-time. The
+                                        courses are clear, engaging, and easy to
+                                        follow."
+                                    </p>
+                                    <div class="testimonial-author">
+                                        <img
+                                            src="/images/client1.jpg"
+                                            alt="Sarah M."
+                                            class="author-image"
+                                        />
+                                        <div class="author-info">
+                                            <h4>Maria L.</h4>
+                                            <p>Marketing Professional</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="testimonial-box">
+                                    <p class="testimonial-text">
+                                        "I love how accessible everything is. I've
+                                        gained real skills I could apply immediately
+                                        at work—without stepping into a classroom."
+                                    </p>
+                                    <div class="testimonial-author">
+                                        <img
+                                            src="/images/client2.jpg"
+                                            alt="Robert J."
+                                            class="author-image-2"
+                                        />
+                                        <div class="author-info">
+                                            <h4>Robert J.</h4>
+                                            <p>Data Analyst</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="testimonial-box">
+                                    <p class="testimonial-text">
+                                        "The community and support are amazing.
+                                        Whenever I had a question, someone was there
+                                        to help. It really made online learning feel
+                                        personal."
+                                    </p>
+                                    <div class="testimonial-author">
+                                        <img
+                                            src="/images/client4.jpg"
+                                            alt="Emily L."
+                                            class="author-image-3"
+                                        />
+                                        <div class="author-info">
+                                            <h4>Emily L.</h4>
+                                            <p>Student & Freelancer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Team Carousel Functionality
+                    const teamCarousel = document.querySelector(
+                        ".team-carousel-inner"
+                    );
+                    const prevButton = document.getElementById("team-prev");
+                    const nextButton = document.getElementById("team-next");
+                    let currentPosition = 0;
+                    const members = document.querySelectorAll(".team-member");
+
+                    // Function to calculate current dimensions and constraints
+                    function calculateDimensions() {
+                        // Get current member width including margin
+                        const memberRect = members[0].getBoundingClientRect();
+                        const memberWidth = memberRect.width;
+
+                        // Determine how many members should be visible based on screen size
+                        const visibleMembers =
+                            window.innerWidth < 768
+                                ? 1
+                                : window.innerWidth < 992
+                                ? 2
+                                : 3;
+
+                        // Calculate maximum position
+                        const maxPosition = Math.max(
+                            0,
+                            members.length - visibleMembers
+                        );
+
+                        return { memberWidth, visibleMembers, maxPosition };
+                    }
+
+                    // Initialize counter display
+                    document.querySelectorAll(".counter").forEach((counter) => {
+                        const target = counter.getAttribute("data-count");
+                        counter.innerText = "0";
+
+                        const observer = new IntersectionObserver(
+                            (entries) => {
+                                entries.forEach((entry) => {
+                                    if (entry.isIntersecting) {
+                                        let count = 0;
+                                        const updateCount = () => {
+                                            const increment = Math.ceil(
+                                                target / 30
+                                            );
+                                            if (count < target) {
+                                                count = Math.min(
+                                                    count + increment,
+                                                    target
+                                                );
+                                                counter.innerText = count;
+                                                setTimeout(updateCount, 50);
+                                            }
+                                        };
+                                        updateCount();
+                                        observer.unobserve(entry.target);
+                                    }
+                                });
+                            },
+                            { threshold: 0.5 }
+                        );
+
+                        observer.observe(counter);
+                    });
+
+                    // Carousel controls
+                    function updateCarousel() {
+                        const { memberWidth, maxPosition } = calculateDimensions();
+
+                        // Ensure currentPosition is within bounds after resize
+                        if (currentPosition > maxPosition) {
+                            currentPosition = maxPosition;
+                        }
+
+                        // Apply translation to position the carousel
+                        teamCarousel.style.transform = `translateX(-${
+                            currentPosition * memberWidth
+                        }px)`;
+
+                        // Enable/disable buttons based on position
+                        prevButton.disabled = currentPosition === 0;
+                        nextButton.disabled = currentPosition >= maxPosition;
+
+                        if (prevButton.disabled) {
+                            prevButton.classList.add("disabled");
+                        } else {
+                            prevButton.classList.remove("disabled");
+                        }
+
+                        if (nextButton.disabled) {
+                            nextButton.classList.add("disabled");
+                        } else {
+                            nextButton.classList.remove("disabled");
+                        }
+                    }
+
+                    prevButton.addEventListener("click", () => {
+                        const { maxPosition } = calculateDimensions();
+                        if (currentPosition > 0) {
+                            currentPosition--;
+                            updateCarousel();
+                        }
+                    });
+
+                    nextButton.addEventListener("click", () => {
+                        const { maxPosition } = calculateDimensions();
+                        if (currentPosition < maxPosition) {
+                            currentPosition++;
+                            updateCarousel();
+                        }
+                    });
+
+                    // Touch events for swiping on mobile
+                    let touchStartX = 0;
+                    let touchEndX = 0;
+
+                    teamCarousel.addEventListener(
+                        "touchstart",
+                        (e) => {
+                            touchStartX = e.changedTouches[0].screenX;
+                        },
+                        false
+                    );
+
+                    teamCarousel.addEventListener(
+                        "touchend",
+                        (e) => {
+                            touchEndX = e.changedTouches[0].screenX;
+                            handleSwipe();
+                        },
+                        false
+                    );
+
+                    function handleSwipe() {
+                        const { maxPosition } = calculateDimensions();
+                        if (
+                            touchEndX < touchStartX &&
+                            currentPosition < maxPosition
+                        ) {
+                            // Swipe left
+                            currentPosition++;
+                            updateCarousel();
+                        } else if (touchEndX > touchStartX && currentPosition > 0) {
+                            // Swipe right
+                            currentPosition--;
+                            updateCarousel();
+                        }
+                    }
+
+                    // Initialize carousel
+                    updateCarousel();
+
+                    // Responsive handling
+                    window.addEventListener("resize", () => {
+                        updateCarousel();
+                    });
+
+                    // Initialize timeline animation
+                    const timelineItems =
+                        document.querySelectorAll(".timeline-item");
+
+                    const timelineObserver = new IntersectionObserver(
+                        (entries) => {
+                            entries.forEach((entry) => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add("animate");
+                                    timelineObserver.unobserve(entry.target);
+                                }
+                            });
+                        },
+                        { threshold: 0.2 }
+                    );
+
+                    timelineItems.forEach((item) => {
+                        timelineObserver.observe(item);
+                    });
+                });
+            </script>
+        </main>
+        
+        <!-- Include Footer -->
+        <%- include('partials/footer') %>
+        
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

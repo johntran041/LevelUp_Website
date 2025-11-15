@@ -1,0 +1,41 @@
+<nav
+    class="col-md-2"
+    style="
+        background-color: #fdf8f3;
+        height: 100vh;
+        padding: 20px 0;
+        padding-left: 11px;
+        border-right: 1px solid #eee;
+    "
+>
+    <ul class="nav flex-column" style="padding: 0; margin: 0">
+        <li class="nav-item">
+            <a
+                class="nav-link text-center <%= activePage === 'users' ? 'active' : '' %>"
+                href="/admin/users"
+                >Users</a
+            >
+        </li>
+        <li class="nav-item">
+            <a
+                class="nav-link text-center <%= activePage === 'institutions' ? 'active' : '' %>"
+                href="/admin/institutions"
+                >Institutions</a
+            >
+        </li>
+        <li class="nav-item">
+            <a
+                class="nav-link text-center <%= activePage === 'courses' ? 'active' : '' %>"
+                href="/admin/courses"
+                >Courses</a
+            >
+        </li>
+        <li class="nav-item">
+            <a
+                class="nav-link text-center <%= activePage === 'posts' ? 'active' : '' %>"
+                href="/admin/posts"
+                >Posts</a
+            >
+        </li>
+    </ul>
+</nav>

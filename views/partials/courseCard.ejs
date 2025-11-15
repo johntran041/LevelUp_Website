@@ -1,0 +1,50 @@
+<!-- Updated Course Card Structure -->
+<div class="col-md-4 mb-4">
+  <div class="card h-100 shadow-sm d-flex flex-column">
+    <!-- Add category badge -->
+    <div class="course-category"><%= course.category || 'General' %></div>
+    
+    <!-- Card image -->
+    <img
+      src="<%= course.imageUrl || course.imageURL || 'images/course-placeholder.jpg' %>"
+      class="card-img-top"
+      alt="<%= course.title %>"
+    />
+    
+    <!-- Card body with flex-grow to push metadata to bottom -->
+    <div class="card-body d-flex flex-column">
+      <h5 class="card-title fw-bold text-center"><%= course.title %></h5>
+      <p class="text-center text-muted">
+        by <%= course.instructor || 'Unknown Instructor' %>
+      </p>
+      
+      <!-- Fixed-height description container with overflow handling -->
+      <div class="description-container" style="height: 80px; overflow: hidden; margin-bottom: 10px;">
+        <p class="card-text">
+          <% if (course.description) { %> 
+            <%= course.description.substring(0, 100) %>
+            <%= course.description.length > 100 ? '...' : '' %> 
+          <% } else { %>
+            No description available. 
+          <% } %>
+        </p>
+      </div>
+      
+      <!-- Course metadata - will always be at the bottom thanks to mt-auto -->
+      <div class="course-meta-container mt-auto">
+        <div>
+          <i class="bi bi-clock me-2"></i> 
+          <%= course.duration || 'Duration not specified' %>
+        </div>
+        <div>
+          <i class="bi bi-star-fill me-2"></i> 
+          <%= course.rating || 0 %> 
+          (<%= Math.floor(Math.random() * 1000) %>)
+        </div>
+      </div>
+    </div>
+    
+    <!-- Make entire card clickable -->
+    <a href="/courses/<%= course._id %>" class="card-link-wrapper" aria-label="View <%= course.title %>"></a>
+  </div>
+</div>

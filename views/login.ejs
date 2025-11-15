@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/authentication/headTag', { title: 'Login', stylesheet:
+    'login.css' }) %>
+    <body>
+        <div class="container-fluid login-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login-form">
+                        <div class="content-wrapper">
+                            <% if (typeof error !== "undefined") { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= error %>
+                            </div>
+                            <% } %>
+
+                            <h2 class="text-center mb-4">Login</h2>
+
+                            <!-- Login box -->
+                            <form
+                                id="loginForm"
+                                action="/auth/login"
+                                method="POST"
+                                novalidate
+                            >
+                                <div class="mb-3">
+                                    <label for="email" class="form-label"
+                                        >Email</label
+                                    >
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="userEmail"
+                                        name="userEmail"
+                                        placeholder="Your Email"
+                                    />
+                                    <div
+                                        id="userEmailError"
+                                        class="error-text"
+                                    ></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label"
+                                        >Password</label
+                                    >
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="userPassword"
+                                        name="userPassword"
+                                        placeholder="Your password"
+                                    />
+                                    <div
+                                        id="userPasswordError"
+                                        class="error-text"
+                                    ></div>
+                                </div>
+
+                                <div class="text-end mb-3">
+                                    <a
+                                        href="/auth/forgetPassword"
+                                        class="text-decoration-none"
+                                        >Forgot your password?</a
+                                    >
+                                </div>
+
+                                <!-- reCAPTCHA box -->
+                                <div class="mb-3 d-flex justify-content-center">
+                                    <div
+                                        class="border border-dark rounded px-4 py-3"
+                                        style="background-color: #fff"
+                                    >
+                                        <div
+                                            class="g-recaptcha"
+                                            data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                                        ></div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    id="captchaError"
+                                    class="text-danger text-center mb-3"
+                                ></div>
+
+                                <button
+                                    class="btn login-btn text-white w-100 py-2"
+                                    type="submit"
+                                >
+                                    Login
+                                </button>
+                            </form>
+
+                            <div class="divider">
+                                <span class="divider-text">OR</span>
+                            </div>
+
+                            <!-- social box -->
+                            <div class="social-login mb-4">
+                                <button class="social-btn" type="button">
+                                    <img
+                                        src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/facebook.svg"
+                                        alt="Facebook"
+                                    />
+                                </button>
+                                <button class="social-btn" type="button">
+                                    <img
+                                        src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/apple.svg"
+                                        alt="Apple"
+                                    />
+                                </button>
+                                <button class="social-btn" type="button">
+                                    <img
+                                        src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/icons/google.svg"
+                                        alt="Google"
+                                    />
+                                </button>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <span
+                                    >Don't have an account?
+                                    <a
+                                        href="/auth/register"
+                                        class="text-decoration-none"
+                                        >Register here</a
+                                    ></span
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 d-none d-md-block image-side">
+                    <img
+                        src="/images/image.png"
+                        alt="Child with headphones"
+                        class="img-fluid"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://www.google.com/recaptcha/api.js"
+            async
+            defer
+        ></script>
+        <script src="/js/login.js"></script>
+    </body>
+</html>

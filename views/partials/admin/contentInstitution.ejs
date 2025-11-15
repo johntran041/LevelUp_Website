@@ -1,0 +1,66 @@
+<main class="col-md-10 admin-main">
+    <!-- Header: Title and Actions -->
+    <div
+        class="admin-header d-flex justify-content-between align-items-center mb-4"
+    >
+        <h2 class="fw-bold m-0">Institution</h2>
+        <div class="d-flex align-items-center gap-2">
+            <input
+                type="text"
+                placeholder="Search..."
+                class="admin-search-input"
+            />
+            <a href="/admin/institutions/add" class="text-decoration-none">
+                <button class="admin-add-button">
+                    Add <i class="bi bi-plus-circle ms-1"></i>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table
+            class="table table-striped table-hover text-center align-middle admin-table"
+        >
+            <thead class="table-light">
+                <tr>
+                    <th class="sortable" data-sort="email">Email</th>
+                    <th class="sortable" data-sort="password">Password</th>
+                    <th class="sortable" data-sort="name">Name</th>
+                    <th class="sortable" data-sort="courses">Courses</th>
+                    <th class="sortable" data-sort="instructors">
+                        Instructors
+                    </th>
+                    <th class="sortable" data-sort="students">Students</th>
+                    <th class="sortable" data-sort="status">Status</th>
+                    <th class="sortable" data-sort="dateJoined">Date Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% institutions.forEach(inst => { %>
+                <tr style="cursor: pointer" data-id="<%= inst._id %>">
+                    <td><%= inst.email %></td>
+                    <td><%= inst.password %></td>
+                    <td><%= inst.name %></td>
+                    <td><%= inst.courses?.length || 0 %></td>
+                    <td><%= inst.instructors?.length || 0 %></td>
+                    <td><%= inst.students?.length || 0 %></td>
+                    <td>
+                        <span
+                            class="badge rounded-pill text-bg-<%= inst.status === 'active' ? 'success' : 'secondary' %>"
+                        >
+                            <%= inst.status %>
+                        </span>
+                    </td>
+                    <td>
+                        <%= new
+                        Date(inst.dateJoined).toLocaleDateString('en-GB', { day:
+                        '2-digit', month: '2-digit', year: 'numeric' }) %>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</main>

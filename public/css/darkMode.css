@@ -1,0 +1,375 @@
+/* Add these overrides to your darkMode.css file */
+
+/* Ensure the course cards are properly styled in dark mode */
+body.dark .card {
+  background-color: var(--card-bg, #1f1f1f);
+  color: var(--text-primary, #f5f5f5);
+  border-color: var(--border-color, #444);
+}
+
+body.dark .card-title, 
+body.dark .card-text,
+body.dark h1, 
+body.dark h2, 
+body.dark h3, 
+body.dark h4, 
+body.dark h5 {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .text-muted {
+  color: #adb5bd !important;
+}
+
+/* Fix carousel text */
+body.dark .carousel-caption {
+  color: #fff;
+}
+
+/* Make sure bootstrap buttons are styled correctly */
+body.dark .btn-outline-secondary {
+  color: #f5f5f5;
+  border-color: #6c757d;
+}
+
+body.dark .btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+/* Ensure the active button is visible */
+body.dark .newCourse-btn.active {
+  background-color: var(--primary-color, #e07b4f);
+  color: #fff;
+}
+
+/* Force dark mode on specific elements that might be hardcoded */
+body.dark {
+  --bs-body-bg: #121212;
+  --bs-body-color: #f5f5f5;
+}
+
+/* Add to your darkMode.css */
+
+/* Learning Path Section */
+body.dark .learning-path-section {
+  background-color: var(--bg-secondary, #1e1e1e);
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .learning-path-card {
+  background-color: var(--card-bg, #1f1f1f);
+  border-color: var(--border-color, #444);
+}
+
+body.dark .learning-path-title,
+body.dark .learning-path-description,
+body.dark .learning-step-title {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .learning-step-number {
+  background-color: var(--primary-color, #e07b4f);
+  color: #fff;
+}
+
+body.dark .learning-path-icon {
+  color: var(--primary-color, #e07b4f);
+}
+
+/* Override any hardcoded background colors */
+body.dark .bg-light, 
+body.dark .bg-white,
+body.dark [class*="bg-light"] {
+  background-color: var(--bg-secondary, #1e1e1e) !important;
+}
+
+/* Add to your darkMode.css */
+
+/* Student Stories Section */
+body.dark .student-stories-section {
+  background-color: var(--bg-primary, #121212);
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .student-story-card {
+  background-color: var(--card-bg, #1f1f1f);
+  border-color: var(--border-color, #444);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .student-name,
+body.dark .student-title,
+body.dark .student-story {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .student-story-card .quote-icon {
+  color: var(--primary-color, #e07b4f);
+  opacity: 0.6;
+}
+
+/* Fix carousel controls and indicators for student stories */
+body.dark .carousel-control-prev-icon,
+body.dark .carousel-control-next-icon {
+  filter: invert(0); /* Don't invert icons in dark mode */
+}
+
+body.dark .carousel-indicators button {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark .carousel-indicators button.active {
+  background-color: var(--primary-color, #e07b4f);
+}
+
+/* Dark Mode Overrides for studentStories.css and learningPath.css */
+
+/* ===== STUDENT STORIES / TESTIMONIALS SECTION ===== */
+body.dark .testimonials-section {
+  background-color: var(--bg-primary, #121212);
+}
+
+body.dark .section-title {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .section-subtitle {
+  color: var(--text-secondary, #adb5bd);
+}
+
+body.dark .testimonial-card {
+  background-color: var(--card-bg, #1f1f1f);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color, #444);
+}
+
+body.dark .testimonial-img {
+  border-color: var(--border-color, #444);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .testimonial-name {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .testimonial-title {
+  color: var(--text-secondary, #adb5bd);
+}
+
+body.dark .testimonial-text {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .testimonial-course {
+  color: var(--text-secondary, #adb5bd);
+}
+
+body.dark .testimonial-content {
+  background-color: transparent;
+}
+
+body.dark .quote-icon {
+  color: var(--primary-color, #ee6c4d);
+}
+
+body.dark .testimonial-indicators [data-bs-target] {
+  background-color: #555;
+}
+
+body.dark .testimonial-indicators .active {
+  background-color: var(--primary-color, #ee6c4d);
+}
+
+body.dark .testimonials-section:before {
+  background-color: var(--border-color, #444);
+}
+
+/* Stats Section */
+body.dark .stats-item {
+  background-color: var(--card-bg, #1f1f1f);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .stats-number {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .stats-label {
+  color: var(--text-secondary, #adb5bd);
+}
+
+/* ===== LEARNING PATHS SECTION ===== */
+body.dark .learning-paths-section {
+  background-color: var(--bg-primary, #121212);
+  border-top: 1px solid var(--border-color, #444);
+}
+
+body.dark .path-card {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background-color: var(--card-bg, #1f1f1f);
+}
+
+/* Path headers can keep their gradient colors */
+
+body.dark .path-body {
+  background-color: var(--card-bg, #1f1f1f);
+}
+
+body.dark .path-description {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .path-courses-title {
+  color: var(--text-primary, #f5f5f5);
+}
+
+body.dark .path-courses-list li {
+  color: var(--text-secondary, #adb5bd);
+}
+
+body.dark .path-meta {
+  color: var(--text-secondary, #adb5bd);
+}
+
+body.dark .view-all-btn {
+  background-color: var(--bg-secondary, #1e1e1e);
+  border-color: var(--primary-color, #ee6c4d);
+  color: var(--primary-color, #ee6c4d);
+}
+
+body.dark .view-all-btn:hover {
+  background-color: var(--primary-color, #ee6c4d);
+  color: #fff;
+}
+
+/* Fix for Bootstrap carousel elements in dark mode */
+body.dark .carousel-control-prev-icon,
+body.dark .carousel-control-next-icon {
+  filter: none; /* Ensure icons are visible */
+}
+
+body.dark .carousel-inner, 
+body.dark .carousel-item,
+body.dark .carousel {
+  background-color: transparent !important;
+}
+
+/* Ensure cards in these sections maintain proper dark mode */
+body.dark .path-card .card,
+body.dark .testimonial-card .card,
+body.dark .stats-item.card {
+  background-color: var(--card-bg, #1f1f1f);
+  border-color: var(--border-color, #444);
+}
+
+/* Add to your darkMode.css */
+
+/* ===== NAVBAR DARK MODE STYLING ===== */
+
+/* Main navbar background and border */
+body.dark .navbar {
+  background-color: var(--navbar-bg, #1f1f1f) !important;
+  border-bottom: 1px solid var(--border-color, #333) !important;
+}
+
+/* Brand text */
+body.dark .navbar-brand,
+body.dark .navbar-brand#navbar-brand {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+/* Navigation links */
+body.dark .nav-link,
+body.dark .nav-link.text-dark {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+body.dark .nav-link:hover {
+  color: var(--primary-color, #e07b4f) !important;
+}
+
+/* The special colored "My Courses/My Teaching" button can stay the same */
+body.dark .nav-link.text-white {
+  color: white !important; /* Ensure text stays white in dark mode */
+}
+
+/* Search bar */
+body.dark .navbar input.form-control {
+  background-color: var(--input-bg, #2d2d2d) !important;
+  color: var(--text-primary, #f5f5f5) !important;
+  border: 1px solid var(--border-color, #444) !important;
+}
+
+body.dark .navbar input.form-control::placeholder {
+  color: var(--text-secondary, #adb5bd) !important;
+}
+
+body.dark .navbar .btn .bi-search {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+/* Icons */
+body.dark .navbar .text-dark {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+body.dark .navbar .bi-cart3,
+body.dark .navbar .bi-chat-dots {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+/* Dropdown menu */
+body.dark .dropdown-menu {
+  background-color: var(--card-bg, #1f1f1f) !important;
+  border-color: var(--border-color, #444) !important;
+}
+
+body.dark .dropdown-item {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+body.dark .dropdown-item:hover,
+body.dark .dropdown-item:focus {
+  background-color: var(--bg-secondary, #2d2d2d) !important;
+}
+
+/* Fix text colors in dropdown */
+body.dark .dropdown-menu .text-dark,
+body.dark .dropdown-menu .fw-bold {
+  color: var(--text-primary, #f5f5f5) !important;
+}
+
+body.dark .dropdown-menu .text-muted {
+  color: var(--text-secondary, #adb5bd) !important;
+}
+
+/* Profile hover effect in dropdown */
+body.dark .profile-hover:hover {
+  background-color: var(--bg-secondary, #2d2d2d) !important;
+}
+
+/* Border colors in dropdown */
+body.dark .dropdown-menu .border-bottom {
+  border-color: var(--border-color, #444) !important;
+}
+
+/* Login/Register buttons for guests */
+body.dark .btn-outline-dark {
+  color: var(--text-primary, #f5f5f5) !important;
+  border-color: var(--text-primary, #f5f5f5) !important;
+}
+
+body.dark .btn-outline-dark:hover {
+  background-color: var(--text-primary, #f5f5f5) !important;
+  color: var(--bg-primary, #121212) !important;
+}
+
+/* Hamburger menu icon */
+body.dark .navbar-toggler-icon {
+  filter: invert(1); /* Invert the hamburger icon to make it visible */
+}
+
+body.dark .navbar-toggler {
+  border-color: var(--border-color, #444) !important;
+}

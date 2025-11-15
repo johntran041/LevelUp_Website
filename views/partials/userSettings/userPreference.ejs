@@ -1,0 +1,183 @@
+<main class="col-md-12">
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <button
+            id="leftSidebarToggle"
+            class="mobile-menu-button"
+            aria-label="Toggle left sidebar"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 class="h4 m-0">Public Profile</h1>
+    </div>
+    <!-- Form Start -->
+    <form
+        action="/userSettings/profilePreference/update/<%= user._id %>"
+        method="POST"
+        enctype="multipart/form-data"
+        class="mb-5"
+    >
+        <div class="row">
+            <!-- Left Column: Form Fields -->
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="firstName"
+                        class="form-control"
+                        placeholder="First Name"
+                        value="<%= user.firstName %>"
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="lastName"
+                        class="form-control"
+                        placeholder="Last Name"
+                        value="<%= user.lastName %>"
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="Email"
+                        value="<%= user.email %>"
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="role"
+                        class="form-control"
+                        placeholder="Role"
+                        value="<%= user.role %>"
+                        disabled
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Date Joined"
+                        value="<%= new Date(user.dateJoined).toLocaleDateString('en-GB') %>"
+                        disabled
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="headline"
+                        class="form-control"
+                        placeholder='Headline, like "Professional Data Analysis"'
+                        value="<%= user.headline %>"
+                    />
+                </div>
+                <div class="mb-3">
+                    <textarea
+                        class="form-control"
+                        name="description"
+                        placeholder="What you describe about yourself"
+                        rows="4"
+                    >
+<%= user.description %></textarea
+                    >
+                </div>
+            </div>
+
+            <!-- Right Column: Avatar -->
+            <div
+                class="col-md-4 d-flex flex-column align-items-center justify-content-start ps-md-5"
+            >
+                <div
+                    style="
+                        width: 150px;
+                        height: 150px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                        background-color: #fff;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    "
+                    class="mb-3 d-flex align-items-center justify-content-center"
+                >
+                    <img
+                        id="avatarPreview"
+                        src="<%= user.avatar || 'https://via.placeholder.com/150' %>"
+                        alt="User profile picture"
+                        style="
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            object-position: center;
+                            border-radius: 50%;
+                        "
+                    />
+                </div>
+
+                <input
+                    type="file"
+                    name="avatar"
+                    class="d-none"
+                    id="avatarInput"
+                    accept="image/*"
+                />
+                <button
+                    type="button"
+                    onclick="document.getElementById('avatarInput').click();"
+                    style="
+                        background-color: #ffffff;
+                        color: #e07b4f;
+                        border: 2px solid #e07b4f;
+                        padding: 8px 24px;
+                        border-radius: 30px;
+                        font-weight: 500;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                        transition: background-color 0.3s ease, color 0.3s ease,
+                            box-shadow 0.3s ease;
+                    "
+                    onmouseover="this.style.backgroundColor='#e07b4f'; this.style.color='white'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'"
+                    onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#e07b4f'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.05)'"
+                >
+                    Update new avatar
+                </button>
+
+                <% if (success) { %>
+                <div
+                    id="success-alert"
+                    class="alert alert-success text-center fw-semibold rounded-pill shadow-sm px-4 py-2 mt-3"
+                    style="max-width: 300px"
+                >
+                    ✅ Profile updated successfully!
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Update Button -->
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center pt-4">
+                <button
+                    type="submit"
+                    style="
+                        background-color: #e07b4f;
+                        color: white;
+                        border: none;
+                        padding: 10px 30px;
+                        border-radius: 30px;
+                        font-weight: 500;
+                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                        transition: background-color 0.3s ease,
+                            box-shadow 0.3s ease;
+                    "
+                    onmouseover="this.style.backgroundColor='#e67e00'; this.style.boxShadow='0 6px 14px rgba(0,0,0,0.15)'"
+                    onmouseout="this.style.backgroundColor='#ff8c00'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.1)'"
+                >
+                    Update your info
+                </button>
+            </div>
+        </div>
+    </form>
+</main>

@@ -1,0 +1,79 @@
+<main
+    class="col-md-10 bg-white min-vh-100 pt-4 px-md-5"
+    style="padding-left: 12rem; padding-right: 12rem"
+>
+    <!-- Header: Back Button + Page Title (Centered) -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <a
+                href="/admin/institutions"
+                class="btn btn-light rounded-pill shadow-sm px-3 py-2 d-inline-flex align-items-center gap-2"
+            >
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+
+        <div class="flex-grow-1 text-center">
+            <h3 class="fw-semibold m-0" style="font-size: 1.8rem">
+                Add New Institution
+            </h3>
+        </div>
+
+        <div style="width: 150px"></div>
+    </div>
+
+    <hr class="my-4" />
+
+    <form action="/admin/institutions/add" method="POST">
+        <div class="row mb-5">
+            <div class="col-12">
+                <h5 class="mb-3 fw-semibold text-muted">Institution Details</h5>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control rounded-3 shadow-sm w-100"
+                        placeholder="Institution Email"
+                        required
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        class="form-control rounded-3 shadow-sm w-100"
+                        placeholder="Password"
+                        required
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold"
+                        >Institution Name</label
+                    >
+                    <input
+                        type="text"
+                        name="institutionName"
+                        class="form-control rounded-3 shadow-sm w-100"
+                        placeholder="Institution Name"
+                        required
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button
+                type="submit"
+                class="btn btn-dark rounded-pill shadow-sm px-4 py-2 fw-semibold w-100"
+                style="max-width: 600px"
+            >
+                Create Institution
+            </button>
+        </div>
+    </form>
+</main>

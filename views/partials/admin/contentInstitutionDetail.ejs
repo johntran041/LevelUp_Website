@@ -1,0 +1,139 @@
+<main class="col-md-10 px-5 py-4 bg-white min-vh-100">
+    <!-- Header: Back Button + Page Title (Centered) -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <a href="/admin/institutions" class="btn btn-light rounded-pill shadow-sm px-3 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+        <div class="flex-grow-1 text-center">
+            <h3 class="fw-semibold m-0" style="font-size: 1.8rem">
+                Institution Profile
+            </h3>
+        </div>
+        <div style="width: 150px"></div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Institution Detail Form -->
+    <form id="institution-form" action="/admin/institutions/update/<%= institution._id %>" method="POST">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h5 class="mb-3 fw-semibold text-muted">Basic Info</h5>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Email</label>
+                    <input type="email" name="email" class="form-control rounded-3 shadow-sm" value="<%= institution.email %>" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Password</label>
+                    <input type="text" name="password" class="form-control rounded-3 shadow-sm" value="<%= institution.password %>" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Institution Name</label>
+                    <input type="text" name="name" class="form-control rounded-3 shadow-sm" value="<%= institution.name %>" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Date Joined</label>
+                    <input type="text" class="form-control rounded-3 shadow-sm text-secondary bg-light" value="<%= new Date(institution.dateJoined).toLocaleDateString('en-GB') %>" readonly />
+                </div>
+
+                <!-- Courses Table -->
+                <div class="mb-4">
+                    <h6 class="fw-semibold text-muted">Courses</h6>
+                    <table class="table table-bordered table-sm text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Course ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (institution.courses.length === 0) { %>
+                                <tr><td colspan="2" class="text-muted">No courses available</td></tr>
+                            <% } else { %>
+                                <% institution.courses.forEach((c, i) => { %>
+                                    <tr><td><%= i + 1 %></td><td><%= c %></td></tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Instructors Table -->
+                <div class="mb-4">
+                    <h6 class="fw-semibold text-muted">Instructors</h6>
+                    <table class="table table-bordered table-sm text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Instructor ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (institution.instructors.length === 0) { %>
+                                <tr><td colspan="2" class="text-muted">No instructors assigned</td></tr>
+                            <% } else { %>
+                                <% institution.instructors.forEach((ins, i) => { %>
+                                    <tr><td><%= i + 1 %></td><td><%= ins %></td></tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Students Table -->
+                <div>
+                    <h6 class="fw-semibold text-muted">Students</h6>
+                    <table class="table table-bordered table-sm text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Student ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (institution.students.length === 0) { %>
+                                <tr><td colspan="2" class="text-muted">No students enrolled</td></tr>
+                            <% } else { %>
+                                <% institution.students.forEach((stu, i) => { %>
+                                    <tr><td><%= i + 1 %></td><td><%= stu %></td></tr>
+                                <% }) %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="mb-3 fw-semibold text-muted">Summary</h5>
+                <div class="d-flex flex-column gap-2">
+                    <div class="p-3 bg-light rounded shadow-sm">
+                        <h6 class="m-0 text-muted">Courses</h6>
+                        <p class="fw-bold fs-5 m-0 text-dark"><%= institution.courses.length %></p>
+                    </div>
+                    <div class="p-3 bg-light rounded shadow-sm">
+                        <h6 class="m-0 text-muted">Instructors</h6>
+                        <p class="fw-bold fs-5 m-0 text-dark"><%= institution.instructors.length %></p>
+                    </div>
+                    <div class="p-3 bg-light rounded shadow-sm">
+                        <h6 class="m-0 text-muted">Students</h6>
+                        <p class="fw-bold fs-5 m-0 text-dark"><%= institution.students.length %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center d-flex justify-content-center gap-3 mb-4">
+            <button type="submit" class="btn btn-dark rounded-pill shadow-sm px-4 py-2 fw-semibold" style="width: 220px">Update</button>
+
+            <% if (institution.status === 'active') { %>
+                <button type="button" class="btn btn-warning rounded-pill shadow-sm px-4 py-2 fw-semibold" id="archive-btn" data-id="<%= institution._id %>" style="width: 220px">Archive</button>
+            <% } else { %>
+                <button type="button" class="btn btn-success rounded-pill shadow-sm px-4 py-2 fw-semibold" id="reactivate-btn" data-id="<%= institution._id %>" style="width: 220px">Reactivate</button>
+            <% } %>
+
+            <button type="button" class="btn btn-danger rounded-pill shadow-sm px-4 py-2 fw-semibold" id="delete-btn" data-id="<%= institution._id %>" style="width: 220px">Delete</button>
+        </div>
+    </form>
+</main>

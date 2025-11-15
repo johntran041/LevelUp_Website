@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" data-user-theme="<%= user ? user.theme : 'light' %>">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Forum</title>
+        
+        <!-- Theme Loader - Must be the first script -->
+        <script src="/js/themeLoader.js"></script>
+        
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/css/navBarStyle.css" />
+        <link rel="stylesheet" href="/css/forum.css" />
+        <link rel="stylesheet" href="/css/darkMode.css" />
+    </head>
+    <body class="<%= user ? user.theme : 'light' %>" <% if (user && user._id) { %>data-user-id="<%= user._id %>"<% } %>>
+        <%- include("partials/navbar") %>
+
+        <div class="container-fluid px-5">
+            <div class="row gx-4">
+                <!-- Sidebar -->
+                <!-- Sidebar Start -->
+                <div class="col-md-3 sidebar position-sticky top-0">
+                    <!-- Profile Row -->
+                    <div
+                        class="d-flex justify-content-center align-items-center text-center mb-3"
+                    >
+                        <img
+                            src="<%= user.avatar %>"
+                            class="avatar mb-2 me-3"
+                        />
+                        <h5
+                            class="fw-bold mb-0"
+                            style="font-size: 1.1rem"
+                        >
+                            <%= user.name %>
+                        </h5>
+                    </div>
+
+                    <!-- Divider -->
+                    <hr class="my-3" />
+
+                    <!-- Programs -->
+                    <% if (user.role === 'Student') { %>
+                    <div>
+                        <h6
+                            class="d-flex align-items-center gap-2 fw-bold course-heading mb-3"
+                            style="font-size: 1rem"
+                        >
+                            <i class="bi bi-journal-text text-primary"></i>
+                            Enrolled Programs
+                        </h6>
+                        <% user.courses.forEach(program => { %>
+                        <a href="/courses/<%= program._id %>">
+                            <button
+                                class="btn course-btn w-100 text-start mb-2"
+                                data-bs-toggle="tooltip"
+                                title="Part of your learning path"
+                            >
+                                <%= program.name %>
+                            </button>
+                        </a>
+
+                        <% }) %>
+                    </div>
+                    <% } else if (user.role === 'Instructor') { %>
+                    <div>
+                        <h6
+                            class="d-flex align-items-center gap-2 fw-bold text-dark mb-3"
+                            style="font-size: 1rem"
+                        >
+                            <i class="bi bi-journal-text text-primary"></i>
+                            Teaching Programs
+                        </h6>
+                        <% user.courses.forEach(program => { %>
+                        <a href="/courses/<%= program._id %>">
+                            <button
+                                class="btn course-btn w-100 text-start mb-2"
+                                data-bs-toggle="tooltip"
+                                title="Part of your learning path"
+                            >
+                                <%= program.name %>
+                            </button>
+                        </a>
+
+                        <% }) %>
+                    </div>
+                    <% } %>
+                </div>
+
+                <!-- Main Feed -->
+                <div class="col-md-6 main-feed">
+                    <div
+                        class="post-card d-flex align-items-center gap-3 mb-4 p-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#postModal"
+                    >
+                        <img
+                            src="<%= user.avatar %>"
+                            class="avatar"
+                            style="width: 50px; height: 50px"
+                        />
+                        <input
+                            type="text"
+                            class="form-control post-launch"
+                            placeholder="Write something..."
+                            readonly
+                        />
+                    </div>
+
+                    <% posts.forEach(post => { %> <% if (post.privacy ===
+                    'public' || userId === post.user.id) { %>
+                    <div class="post-card">
+                        <!-- Post Header -->
+                        <div
+                            class="d-flex align-items-center mb-3 justify-content-between"
+                        >
+                            <div class="d-flex align-items-center">
+                                <img
+                                    src="<%= post.user.avatar %>"
+                                    class="avatar me-2"
+                                    style="
+                                        width: 50px;
+                                        height: 50px;
+                                        border-radius: 50%;
+                                        object-fit: cover;
+                                    "
+                                />
+                                <div>
+                                    <strong><%= post.user.name %></strong><br />
+                                    <small class="text-muted">
+                                        <%= post.timeAgo %> <% if (post.privacy
+                                        === 'public') { %> · 🌍 Public <% } else
+                                        { %> · 🔒 Private <% } %>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <% if (userId === post.user.id) { %>
+                            <!-- 3 dots dropdown -->
+                            <div class="dropdown">
+                                <i
+                                    class="bi bi-three-dots"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    style="font-size: 1.3rem; cursor: pointer"
+                                ></i>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <button
+                                            class="dropdown-item edit-post-btn"
+                                            data-post-id="<%= post._id %>"
+                                            data-post-content="<%= post.content %>"
+                                            data-post-image="<%= (post.media && post.media.length > 0 && !post.media[0].endsWith('.mp4')) ? post.media[0] : '' %>"
+                                            data-post-privacy="<%= post.privacy %>"
+                                        >
+                                            Edit
+                                        </button>
+                                    </li>
+
+                                    <li>
+                                        <form
+                                            action="/forum/delete/<%= post._id %>"
+                                            method="POST"
+                                            style="margin: 0"
+                                            onsubmit="return confirm('Are you sure you want to delete this post?');"
+                                        >
+                                            <button
+                                                type="submit"
+                                                class="dropdown-item text-danger"
+                                            >
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <% } %>
+                        </div>
+
+                        <!-- Post Content -->
+                        <p><%= post.content %></p>
+
+                        <% if (post.media && post.media.length > 0) { %> <% var
+                        images = []; var videos = []; for (var i = 0; i <
+                        post.media.length; i++) { if
+                        (post.media[i].endsWith('.mp4')) {
+                        videos.push(post.media[i]); } else {
+                        images.push(post.media[i]); } } %>
+
+                        <!-- Image (Only allow single image per post for now) -->
+                        <% if (images.length > 0) { %>
+                        <div class="post-media mb-3">
+                            <img
+                                src="<%= images[0] %>"
+                                alt="Post Image"
+                                class="img-fluid shadow-sm w-100 rounded-4"
+                                style="
+                                    border-radius: 16px;
+                                    object-fit: cover;
+                                    max-height: 600px;
+                                "
+                            />
+                        </div>
+
+                        <% } %>
+
+                        <!-- Videos -->
+                        <% videos.forEach(function(video) { %>
+                        <video
+                            src="<%= video %>"
+                            controls
+                            class="img-fluid rounded shadow-sm w-100 mb-2"
+                            style="max-width: 400px; border-radius: 12px"
+                        ></video>
+                        <% }) %> <% } %>
+
+                        <!-- Reaction Section -->
+                        <div
+                            class="d-flex justify-content-between align-items-center mt-3 mb-2"
+                        >
+                            <div class="d-flex align-items-center gap-1">
+                                <i
+                                    class="bi bi-heart-fill like-heart"
+                                    style="cursor: default; color: <%= post.userLiked ? 'red' : '#ccc' %>;"
+                                ></i>
+                                <span class="like-count"
+                                    ><%= post.likes %></span
+                                >
+                            </div>
+
+                            <div class="d-flex align-items-center gap-1">
+                                <a
+                                    href="/forum/<%= post._id %>"
+                                    style="text-decoration: none"
+                                >
+                                    <i
+                                        class="bi bi-chat-dots-fill text-primary"
+                                    ></i>
+                                    <span>
+                                        <%= post.comments.length %>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Reaction Buttons -->
+                        <div
+                            class="reaction-btn-group d-flex justify-content-between gap-2"
+                        >
+                            <!-- Like button -->
+                            <button
+                                class="reaction-btn flex-fill like-btn"
+                                data-post-id="<%= post._id %>"
+                                data-liked="<%= post.userLiked %>"
+                            >
+                                <%= post.userLiked ? "Liked" : "Like" %>
+                            </button>
+
+                            <!-- Comment button (link) -->
+                            <a
+                                href="/forum/<%= post._id %>"
+                                class="reaction-btn flex-fill text-center"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    text-decoration: none;
+                                "
+                            >
+                                Comment
+                            </a>
+                        </div>
+
+                        <!-- Comment Input -->
+                        <form
+                            action="/forum/<%= post._id %>/comment"
+                            method="POST"
+                            class="position-relative w-100 mt-3"
+                        >
+                            <input
+                                type="text"
+                                name="text"
+                                class="form-control pe-5"
+                                placeholder="Add a reply..."
+                                required
+                            />
+                        </form>
+
+                        <!-- Comments -->
+                        <% let showComments = post.comments; if
+                        (post.comments.length > 2) { showComments =
+                        post.comments .sort(() => 0.5 - Math.random()) .slice(0,
+                        2); } %> <% showComments.forEach(comment => { %>
+                        <div
+                            class="d-flex align-items-start gap-3 mb-4"
+                            style="margin-top: 20px"
+                        >
+                            <img
+                                src="<%= comment.user.avatar %>"
+                                alt="Avatar"
+                                class="rounded-circle"
+                                style="
+                                    width: 38px;
+                                    height: 38px;
+                                    object-fit: cover;
+                                "
+                            />
+                            <div class="comment-box">
+                                <div class="comment-author">
+                                    <%= comment.user.name %>
+                                </div>
+                                <div class="comment-text">
+                                    <%= comment.text %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <% }) %> <% if (post.comments.length > 2) { %>
+                        <a href="/forum/<%= post._id %>">View more comments</a>
+                        <% } %>
+                    </div>
+                    <% } %> <% }) %>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="col-md-3 rightbar">
+                    <h6 class="mb-3 fw-bold">Recommended Users</h6>
+                    <% users.forEach(user => { %>
+                    <div
+                        class="d-flex align-items-center justify-content-between mb-3"
+                    >
+                        <div class="d-flex align-items-center gap-2">
+                            <img
+                                src="<%= user.avatar %>"
+                                class="avatar"
+                                style="width: 40px; height: 40px"
+                            />
+                            <a
+                                href="<%= user.profileUrl %>"
+                                style="text-decoration: none; color: #272727"
+                            >
+                                <span class="fw-medium"
+                                    ><%= user.name %></span
+                                ></a
+                            >
+                        </div>
+
+                        <% if (user.followed) { %>
+                        <button
+                            class="btn btn-sm fw-semibold follow-btn followed"
+                        >
+                            Followed
+                        </button>
+
+                        <% } else { %>
+                        <form action="/follow" method="POST">
+                            <input
+                                type="hidden"
+                                name="instructorId"
+                                value="<%= user.id %>"
+                            />
+                            <button
+                                class="btn btn-sm fw-semibold follow-btn follow"
+                            >
+                                Follow
+                            </button>
+                        </form>
+                        <% } %>
+                    </div>
+
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Modal -->
+        <div
+            class="modal fade"
+            id="postModal"
+            tabindex="-1"
+            aria-labelledby="postModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div
+                    class="modal-content p-4 rounded-4 shadow-sm border-0"
+                >
+                    <!-- Modal Header -->
+                    <div class="modal-header border-0 pb-0">
+                        <h5
+                            class="modal-title fw-semibold"
+                            id="postModalLabel"
+                        >
+                            Create a New Post
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="postForm" enctype="multipart/form-data">
+                        <!-- Modal Body -->
+                        <div class="modal-body pt-3">
+                            <!-- User Avatar, Name, and Privacy -->
+                            <div
+                                class="d-flex justify-content-between align-items-start mb-3"
+                            >
+                                <div class="d-flex align-items-center gap-3">
+                                    <img
+                                        src="<%= user.avatar %>"
+                                        alt="Avatar"
+                                        style="
+                                            width: 56px;
+                                            height: 56px;
+                                            border-radius: 50%;
+                                            object-fit: cover;
+                                        "
+                                    />
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-semibold"
+                                            ><%= user.firstName %> <%=
+                                            user.lastName %></span
+                                        >
+                                        <select
+                                            class="form-select form-select-sm mt-1"
+                                            name="privacy"
+                                            style="
+                                                width: 110px;
+                                                font-size: 0.85rem;
+                                            "
+                                        >
+                                            <option value="public">
+                                                🌍 Public
+                                            </option>
+                                            <option value="private">
+                                                🔒 Private
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Textarea -->
+                            <div class="mb-3">
+                                <textarea
+                                    id="contentInput"
+                                    name="content"
+                                    rows="4"
+                                    class="form-control border-0"
+                                    placeholder="What's on your mind?"
+                                    style="font-size: 1.1rem"
+                                ></textarea>
+                            </div>
+
+                            <!-- Media Preview -->
+                            <div
+                                id="mediaPreview"
+                                class="d-flex flex-wrap gap-2 mb-3"
+                            ></div>
+
+                            <!-- Action Buttons (Same Row) -->
+                            <div class="d-flex gap-3 mt-3">
+                                <!-- Add Media -->
+                                <div class="flex-fill">
+                                    <label
+                                        for="mediaInput"
+                                        class="form-control d-flex align-items-center gap-2 bg-light border-0"
+                                        style="cursor: pointer"
+                                    >
+                                        <i
+                                            class="bi bi-image text-danger fs-5"
+                                        ></i>
+                                        <span class="fw-medium"
+                                            >Add Media</span
+                                        >
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="mediaInput"
+                                        accept="image/*,video/*"
+                                        multiple
+                                        hidden
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Footer -->
+                        <div class="modal-footer border-0 pt-3">
+                            <button
+                                type="submit"
+                                class="btn w-100 rounded-pill fw-semibold theme-btn"
+                            >
+                                Post
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Post Modal -->
+        <div
+            class="modal fade"
+            id="editPostModal"
+            tabindex="-1"
+            aria-labelledby="editPostModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div
+                    class="modal-content p-4 rounded-4 shadow-sm border-0"
+                >
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-semibold">
+                            Edit Post
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+
+                    <form id="editPostForm" enctype="multipart/form-data">
+                        <div class="modal-body pt-3">
+                            <input
+                                type="hidden"
+                                id="editPostId"
+                                name="postId"
+                            />
+
+                            <!-- Privacy -->
+                            <div class="mb-3">
+                                <label for="editPrivacyInput" class="form-label"
+                                    >Privacy</label
+                                >
+                                <select
+                                    id="editPrivacyInput"
+                                    name="privacy"
+                                    class="form-select"
+                                >
+                                    <option value="public">🌍 Public</option>
+                                    <option value="private">🔒 Private</option>
+                                </select>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="mb-3">
+                                <textarea
+                                    id="editContentInput"
+                                    name="content"
+                                    rows="4"
+                                    class="form-control border-0"
+                                    placeholder="Update your post..."
+                                    style="font-size: 1.1rem"
+                                ></textarea>
+                            </div>
+
+                            <!-- Existing Media Preview -->
+                            <div
+                                id="editMediaPreview"
+                                class="d-flex gap-2 mb-3"
+                            ></div>
+
+                            <!-- Upload new media -->
+                            <div>
+                                <label for="editMediaInput" class="form-label"
+                                    >Change Image (optional)</label
+                                >
+                                <input
+                                    type="file"
+                                    id="editMediaInput"
+                                    name="media"
+                                    accept="image/*"
+                                    class="form-control"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="modal-footer border-0 pt-3">
+                            <button
+                                type="submit"
+                                class="btn w-100 rounded-pill fw-semibold theme-btn"
+                            >
+                                Update Post
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
+        <script src="/js/forum.js"></script>
+    </body>
+</html>
